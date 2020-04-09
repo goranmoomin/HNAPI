@@ -17,7 +17,8 @@ extension Endpoint {
         let tags = ids.map({ "story_\($0)" })
         components.path += "search"
         components.queryItems = [
-            URLQueryItem(name: "tags", value: "(story,job,poll),(\(tags.joined(separator: ",")))")
+            URLQueryItem(name: "tags", value: "(story,job,poll),(\(tags.joined(separator: ",")))"),
+            URLQueryItem(name: "hitsPerPage", value: "\(ids.count)"),
         ]
         let url = components.url(relativeTo: algoliaBase)!
         return Endpoint(url: url)
