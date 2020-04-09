@@ -17,4 +17,10 @@ final class EndpointTests: XCTestCase {
             endpoint.url.absoluteString,
             "https://hn.algolia.com/api/v1/search?tags=(story,job,poll)&query=foo")
     }
+
+    func testCategoryEndpoint() {
+        let endpoint = Endpoint.firebase(category: .top)
+        XCTAssertEqual(
+            endpoint.url.absoluteString, "https://hacker-news.firebaseio.com/v0/topstories.json")
+    }
 }
