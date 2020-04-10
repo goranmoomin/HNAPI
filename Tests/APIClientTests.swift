@@ -6,6 +6,7 @@ final class APIClientTests: XCTestCase {
     class MockClient: NetworkClient {
         enum Error: Swift.Error { case unknown }
         func request(to endpoint: Endpoint, completionHandler: @escaping Completion) {
+            // FIXME: Remove zalgo
             if endpoint.url.absoluteString
                 == "https://hn.algolia.com/api/v1/search?tags=(story,job,poll),(story_1)&hitsPerPage=1"
             {
@@ -591,20 +592,25 @@ final class APIClientTests: XCTestCase {
     }
 
     func testLoadingPage() {
+        let expectation = self.expectation(description: "Expect for page to be loaded")
         client.items(ids: [1]) { result in
             guard case let .success(items) = result else {
                 XCTFail("Error \(result.failure!) thrown.")
+                expectation.fulfill()
                 return
             }
             let item = items[0]
             self.client.page(item: item) { result in
                 guard case let .success(page) = result else {
                     XCTFail("Error \(result.failure!) thrown.")
+                    expectation.fulfill()
                     return
                 }
                 XCTAssertEqual(page.children.count, 5)
                 XCTAssertEqual(page.children[0].children[0].children[0].text, "<p>sure</p>")
+                expectation.fulfill()
             }
         }
+        waitForExpectations(timeout: .infinity, handler: nil)
     }
 }

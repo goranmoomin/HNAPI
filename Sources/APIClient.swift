@@ -9,6 +9,8 @@ class APIClient {
         decoder.dateDecodingStrategy = .secondsSince1970
         return decoder
     }()
+    // FIXME: How can I just use the OperationQueue provided from the URLSession
+    let queue = DispatchQueue(label: "io.pcr910303.HNAPI.APIClientQueue", qos: .userInitiated)
 
     // MARK: - Top Level Items
 
@@ -53,28 +55,34 @@ class APIClient {
     struct AlgoliaItem: Decodable { var children: [Comment] }
 
     func page(item: TopLevelItem, completionHandler: @escaping (Result<Page, Error>) -> Void) {
-        networkClient.request(to: .algolia(id: item.id)) { result in
+        var comments: [Comment]!
+        var html: String!
+        let group = DispatchGroup()
+        group.enter()
+        networkClient.request(to: .algolia(id: item.id)) { result in defer { group.leave() }
             guard case let .success((data, _)) = result else {
                 completionHandler(.failure(result.failure!))
                 return
             }
             do {
                 let algoliaItem = try self.decoder.decode(AlgoliaItem.self, from: data)
-                var comments = algoliaItem.children
-                // TODO: Fetch HN & Algolia API concurrently
-                self.networkClient.request(to: .hn(id: item.id)) { result in
-                    guard case let .success((data, _)) = result else {
-                        completionHandler(.failure(result.failure!))
-                        return
-                    }
-                    let html = String(data: data, encoding: .utf8)!
-                    do {
-                        let parser = try HNParser(html: html)
-                        comments = parser.sortedCommentTree(original: comments)
-                        let page = Page(item: item, children: comments)
-                        completionHandler(.success(page))
-                    } catch { completionHandler(.failure(error)) }
-                }
+                comments = algoliaItem.children
+            } catch { completionHandler(.failure(error)) }
+        }
+        group.enter()
+        self.networkClient.request(to: .hn(id: item.id)) { result in defer { group.leave() }
+            guard case let .success((data, _)) = result else {
+                completionHandler(.failure(result.failure!))
+                return
+            }
+            html = String(data: data, encoding: .utf8)
+        }
+        group.notify(queue: queue) {
+            do {
+                let parser = try HNParser(html: html)
+                comments = parser.sortedCommentTree(original: comments)
+                let page = Page(item: item, children: comments)
+                completionHandler(.success(page))
             } catch { completionHandler(.failure(error)) }
         }
     }
