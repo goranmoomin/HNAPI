@@ -58,33 +58,32 @@ final class JobTests: XCTestCase {
         } catch { XCTFail("Error \(error) thrown.") }
     }
 
-    func testDecodingTextStory() {
-        let jsonData = """
+    func testDecodingTextJob() {
+        let jsonData = #"""
             {
-              "created_at": "2008-02-22T02:33:40.000Z",
-              "title": "Ask HN: The Arc Effect",
+              "created_at": "2008-05-16T23:40:17.000Z",
+              "title": "Justin.tv is looking for a Lead Flash Engineer!",
               "url": "",
-              "author": "tel",
-              "points": 25,
-              "story_text": "<i>or</i> HN: the Next Iteration<p>I get the impression that with Arc being released a lot of people who never had time for HN before are suddenly dropping in more often. (PG: what are the numbers on this? I'm envisioning a spike.)<p>Not to say that isn't great, but I'm wary of Diggification. Between links comparing programming to sex and a flurry of gratuitous, ostentatious  adjectives in the headlines it's a bit concerning.<p>80% of the stuff that makes the front page is still pretty awesome, but what's in place to keep the signal/noise ratio high? Does the HN model still work as the community scales? What's in store for (++ HN)?",
+              "author": "justin",
+              "points": 6,
+              "story_text": "Justin.tv is the biggest live video site online. We serve hundreds of thousands of video streams a day, and have supported up to 50k live concurrent viewers. Our site is growing every week, and we just added a 10 gbps line to our colo. Our unique visitors are up 900% since January.<p>There are a lot of pieces that fit together to make Justin.tv work: our video cluster, IRC server, our web app, and our monitoring and search services, to name a few. A lot of our website is dependent on Flash, and we're looking for talented Flash Engineers who know AS2 and AS3 very well who want to be leaders in the development of our Flash.<p>Responsibilities<p><pre><code>    * Contribute to product design and implementation discussions\n    * Implement projects from the idea phase to production\n    * Test and iterate code before and after production release \n</code></pre>\nQualifications<p><pre><code>    * You should know AS2, AS3, and maybe a little be of Flex.\n    * Experience building web applications.\n    * A strong desire to work on website with passionate users and ideas for how to improve it.\n    * Experience hacking video streams, python, Twisted or rails all a plus.\n</code></pre>\nWhile we're growing rapidly, Justin.tv is still a small, technology focused company, built by hackers for hackers. Seven of our ten person team are engineers or designers. We believe in rapid development, and push out new code releases every week. We're based in a beautiful office in the SOMA district of SF, one block from the caltrain station. If you want a fun job hacking on code that will touch a lot of people, JTV is for you.<p>Note: You must be physically present in SF to work for JTV. Completing the technical problem at <a href=\"http://www.justin.tv/problems/bml\" rel=\"nofollow\">http://www.justin.tv/problems/bml</a> will go a long way with us. Cheers!",
               "comment_text": null,
-              "num_comments": 16,
+              "num_comments": null,
               "story_id": null,
               "story_title": null,
               "story_url": null,
               "parent_id": null,
-              "created_at_i": 1203647620,
-              "relevancy_score": 953,
+              "created_at_i": 1210981217,
+              "relevancy_score": 1115,
               "_tags": [
-                "story",
-                "author_tel",
-                "story_121003",
-                "ask_hn"
+                "job",
+                "author_justin",
+                "story_192327"
               ],
-              "objectID": "121003",
+              "objectID": "192327",
               "_highlightResult": {
                 "title": {
-                  "value": "Ask HN: The Arc Effect",
+                  "value": "Justin.tv is looking for a Lead Flash Engineer!",
                   "matchLevel": "none",
                   "matchedWords": []
                 },
@@ -94,29 +93,26 @@ final class JobTests: XCTestCase {
                   "matchedWords": []
                 },
                 "author": {
-                  "value": "tel",
+                  "value": "justin",
                   "matchLevel": "none",
                   "matchedWords": []
                 },
                 "story_text": {
-                  "value": "<i>or</i> HN: the Next Iteration<p>I get the impression that with Arc being released a lot of people who never had time for HN before are suddenly dropping in more often. (PG: what are the numbers on this? I'm envisioning a spike.)<p>Not to say that isn't great, but I'm wary of Diggification. Between links comparing programming to sex and a flurry of gratuitous, ostentatious  adjectives in the headlines it's a bit concerning.<p>80% of the stuff that makes the front page is still pretty awesome, but what's in place to keep the signal/noise ratio high? Does the HN model still work as the community scales? What's in store for (++ HN)?",
+                  "value": "Justin.tv is the biggest live video site online. We serve hundreds of thousands of video streams a day, and have supported up to 50k live concurrent viewers. Our site is growing every week, and we just added a 10 gbps line to our colo. Our unique visitors are up 900% since January.<p>There are a lot of pieces that fit together to make Justin.tv work: our video cluster, IRC server, our web app, and our monitoring and search services, to name a few. A lot of our website is dependent on Flash, and we're looking for talented Flash Engineers who know AS2 and AS3 very well who want to be leaders in the development of our Flash.<p>Responsibilities<p><pre><code>    * Contribute to product design and implementation discussions\n    * Implement projects from the idea phase to production\n    * Test and iterate code before and after production release \n</code></pre>\nQualifications<p><pre><code>    * You should know AS2, AS3, and maybe a little be of Flex.\n    * Experience building web applications.\n    * A strong desire to work on website with passionate users and ideas for how to improve it.\n    * Experience hacking video streams, python, Twisted or rails all a plus.\n</code></pre>\nWhile we're growing rapidly, Justin.tv is still a small, technology focused company, built by hackers for hackers. Seven of our ten person team are engineers or designers. We believe in rapid development, and push out new code releases every week. We're based in a beautiful office in the SOMA district of SF, one block from the caltrain station. If you want a fun job hacking on code that will touch a lot of people, JTV is for you.<p>Note: You must be physically present in SF to work for JTV. Completing the technical problem at <a href=\"http://www.justin.tv/problems/bml\" rel=\"nofollow\">http://www.justin.tv/problems/bml</a> will go a long way with us. Cheers!",
                   "matchLevel": "none",
                   "matchedWords": []
                 }
               }
             }
-            """
+            """#
             .data(using: .utf8)!
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
         do {
-            let story = try decoder.decode(Story.self, from: jsonData)
-            XCTAssertEqual(story.author, "tel")
-            XCTAssertEqual(story.points, 25)
-            XCTAssertEqual(story.commentCount, 16)
-            XCTAssert(
-                (story.content.text?.starts(with: "<i>or</i> HN: the Next Iteration")).isTruthy())
-            XCTAssertEqual(story.creation, Date(timeIntervalSince1970: 1_203_647_620))
+            let job = try decoder.decode(Job.self, from: jsonData)
+            XCTAssert((job.content.text?.starts(with: "Justin.tv")).isTruthy())
+            XCTAssertEqual(job.creation, Date(timeIntervalSince1970: 1_210_981_217))
+            XCTAssertEqual(job.title, "Justin.tv is looking for a Lead Flash Engineer!")
         } catch { XCTFail("Error \(error) thrown.") }
     }
 }
