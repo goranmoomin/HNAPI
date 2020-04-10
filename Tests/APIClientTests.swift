@@ -549,6 +549,43 @@ final class APIClientTests: XCTestCase {
                                       </font>
                           </div></div></td></tr>
                           </table></td></tr>
+                                  <tr class='athing comtr ' id='454426'><td>
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><img src="s.gif" height="1" width="14"></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                              <a href="user?id=Arrington" class="hnuser">Arrington</a> <span class="age"><a href="item?id=454426">on Jan 28, 2009</a></span> <span id="unv_454426"></span><span class="par"></span> [dead]  <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 454426)"></a>          <span class='storyon'></span>
+                                      </span></div><br><div class="comment">
+                                      <span class="commtext cdd">This is why we can't have nice things.</span>
+                                  <div class='reply'>        <p><font size="1">
+                                      </font>
+                          </div></div></td></tr>
+                          </table></td></tr>
+                                  <tr class='athing comtr ' id='454424'><td>
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><img src="s.gif" height="1" width="14"></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                              <a href="user?id=Arrington" class="hnuser">Arrington</a> <span class="age"><a href="item?id=454424">on Jan 28, 2009</a></span> <span id="unv_454424"></span><span class="par"></span> [dead]  <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 454424)"></a>          <span class='storyon'></span>
+                                      </span></div><br><div class="comment">
+                                      <span class="commtext cdd">This is why we can't have nice things.</span>
+                                  <div class='reply'>        <p><font size="1">
+                                      </font>
+                          </div></div></td></tr>
+                          </table></td></tr>
+                                  <tr class='athing comtr ' id='454410'><td>
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><img src="s.gif" height="1" width="14"></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                              <a href="user?id=Arrington" class="hnuser">Arrington</a> <span class="age"><a href="item?id=454410">on Jan 28, 2009</a></span> <span id="unv_454410"></span><span class="par"></span> [dead]  <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 454410)"></a>          <span class='storyon'></span>
+                                      </span></div><br><div class="comment">
+                                      <span class="commtext cdd">This is why we can't have nice things.</span>
+                                  <div class='reply'>        <p><font size="1">
+                                      </font>
+                          </div></div></td></tr>
+                          </table></td></tr>
+                                  <tr class='athing comtr ' id='82729'><td>
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><img src="s.gif" height="1" width="14"></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                              <a href="user?id=vice" class="hnuser">vice</a> <span class="age"><a href="item?id=82729">on Nov 22, 2007</a></span> <span id="unv_82729"></span><span class="par"></span> [dead]  <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 82729)"></a>          <span class='storyon'></span>
+                                      </span></div><br><div class="comment">
+                                      <span class="commtext cdd">I'm nX 1 too<p>;)
+                    </span>
+                                  <div class='reply'>        <p><font size="1">
+                                      </font>
+                          </div></div></td></tr>
+                          </table></td></tr>
                                 </table>
                           <br><br>
                       </td></tr>
@@ -604,6 +641,8 @@ final class APIClientTests: XCTestCase {
                 }
                 XCTAssertEqual(page.children.count, 5)
                 XCTAssertEqual(page.children[0].children[0].children[0].text, "<p>sure</p>")
+                XCTAssertEqual(page.children[0].color, .c00)
+                XCTAssertEqual(page.children[4].color, .cdd)
             }
         }
     }

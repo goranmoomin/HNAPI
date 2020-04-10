@@ -1,12 +1,26 @@
 import Foundation
 
 class Comment: Decodable {
+    enum Color: String, CaseIterable {
+        case c00
+        case c5a
+        case c73
+        case c82
+        case c88
+        case c9c
+        case cae
+        case cbe
+        case cce
+        case cdd
+    }
+
     // MARK: - Properties
 
     var id: Int
     var creation: Date
     var author: String
     var text: String
+    var color: Color = .c00
     var children: [Comment]
 
     // MARK: - Decodable

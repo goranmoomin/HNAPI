@@ -18,14 +18,38 @@ class HNParser {
         return ids
     }
 
+    func commTextEl(id: Int) -> Element {
+        // FIXME: Error handling
+        let aThingEl = try! document.select(".athing.comtr#\(id)").array()[0]
+        let commTextEl = try! aThingEl.select(".commtext").array()[0]
+        return commTextEl
+    }
+
+    func commentColors() -> [Int: Comment.Color] {
+        var commentColors: [Int: Comment.Color] = [:]
+        for id in ids() {
+            let commTextEl = self.commTextEl(id: id)
+            for color in Comment.Color.allCases {
+                if commTextEl.hasClass(color.rawValue) {
+                    commentColors[id] = color
+                    break
+                }
+            }
+        }
+        return commentColors
+    }
+
     func sortedCommentTree(original: [Comment]) -> [Comment] {
         let ids = self.ids()
+        let commentColors = self.commentColors()
         let sortedTree = original.sorted { left, right in
             guard let leftIndex = ids.firstIndex(of: left.id) else { return false }
             guard let rightIndex = ids.firstIndex(of: right.id) else { return true }
             return leftIndex < rightIndex
         }
         for comment in sortedTree {
+            // TODO: Decide whether color should be given for ones that aren't found. cdd, perhaps.
+            if let color = commentColors[comment.id] { comment.color = color }
             comment.children = sortedCommentTree(original: comment.children)
         }
         return sortedTree
