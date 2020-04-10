@@ -25,8 +25,14 @@ class Comment: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
         creation = try container.decode(Date.self, forKey: .creation)
-        text = try container.decode(String.self, forKey: .text)
-        author = try container.decode(String.self, forKey: .author)
+        do {
+            text = try container.decode(String.self, forKey: .text)
+            author = try container.decode(String.self, forKey: .author)
+        } catch {
+            // FIXME: Remove workaround of deleted comments
+            text = ""
+            author = ""
+        }
         children = try container.decode([Comment].self, forKey: .children)
     }
 }

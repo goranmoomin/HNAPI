@@ -1,12 +1,16 @@
 import Foundation
 
 class AlgoliaAPIClient {
+    // MARK: - Properties
+
     var networkClient: NetworkClient = URLSession.shared
     let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
         return decoder
     }()
+
+    // MARK: - Top Level Items
 
     struct QueryResult: Decodable { var hits: [TopLevelItem] }
 
@@ -43,4 +47,24 @@ class AlgoliaAPIClient {
     func topItems(
         count: Int = 30, completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
     ) { items(category: .top, count: count, completionHandler: completionHandler) }
+
+    // MARK: - Page
+
+    struct AlgoliaItem: Decodable { var children: [Comment] }
+
+    func page(item: TopLevelItem, completionHandler: @escaping (Result<Page, Error>) -> Void) {
+        networkClient.request(to: .algolia(id: item.id)) { result in
+            guard case let .success((data, _)) = result else {
+                completionHandler(.failure(result.failure!))
+                return
+            }
+            let pageResult = Result<Page, Error> {
+                let algoliaItem = try self.decoder.decode(AlgoliaItem.self, from: data)
+                // TODO: Fetch HN & reorder the comment tree
+                let comments = algoliaItem.children
+                return Page(item: item, children: comments)
+            }
+            completionHandler(pageResult)
+        }
+    }
 }

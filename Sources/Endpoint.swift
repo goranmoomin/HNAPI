@@ -12,6 +12,13 @@ extension Endpoint {
     static var algoliaBase = URL(string: "https://hn.algolia.com/api/v1/")!
     static var firebaseBase = URL(string: "https://hacker-news.firebaseio.com/v0/")!
 
+    static func algolia(id: Int) -> Endpoint {
+        var components = URLComponents()
+        components.path += "items/\(id)"
+        let url = components.url(relativeTo: algoliaBase)!
+        return Endpoint(url: url)
+    }
+
     static func algolia(ids: [Int]) -> Endpoint {
         var components = URLComponents()
         let tags = ids.map({ "story_\($0)" })
