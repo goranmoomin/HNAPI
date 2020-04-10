@@ -1,7 +1,7 @@
 import Foundation
 
 class AlgoliaAPIClient {
-    let networkClient: NetworkClient = URLSession.shared
+    var networkClient: NetworkClient = URLSession.shared
     let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
