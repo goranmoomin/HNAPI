@@ -90,7 +90,9 @@ final class TopLevelItemTests: XCTestCase {
         decoder.dateDecodingStrategy = .secondsSince1970
         do {
             let items = try decoder.decode([TopLevelItem].self, from: jsonData)
+            XCTAssertEqual(items[0].id, 8863)
             XCTAssertEqual(items[0].story?.title, "My YC app: Dropbox - Throw away your USB drive")
+            XCTAssertEqual(items[1].id, 22_818_097)
             XCTAssertEqual(
                 items[1].job?.content.url?.absoluteString,
                 "https://boards.greenhouse.io/genius/jobs/1456158")

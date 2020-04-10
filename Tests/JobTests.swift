@@ -49,6 +49,7 @@ final class JobTests: XCTestCase {
         decoder.dateDecodingStrategy = .secondsSince1970
         do {
             let job = try decoder.decode(Job.self, from: jsonData)
+            XCTAssertEqual(job.id, 22_818_097)
             XCTAssertEqual(
                 job.content, .url(URL(string: "https://boards.greenhouse.io/genius/jobs/1456158")!))
             XCTAssertEqual(job.creation, Date(timeIntervalSince1970: 1_586_386_632))
@@ -110,6 +111,7 @@ final class JobTests: XCTestCase {
         decoder.dateDecodingStrategy = .secondsSince1970
         do {
             let job = try decoder.decode(Job.self, from: jsonData)
+            XCTAssertEqual(job.id, 192327)
             XCTAssert((job.content.text?.starts(with: "Justin.tv")).isTruthy())
             XCTAssertEqual(job.creation, Date(timeIntervalSince1970: 1_210_981_217))
             XCTAssertEqual(job.title, "Justin.tv is looking for a Lead Flash Engineer!")

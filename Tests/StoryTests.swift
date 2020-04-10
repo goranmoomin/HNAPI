@@ -50,6 +50,7 @@ final class StoryTests: XCTestCase {
         decoder.dateDecodingStrategy = .secondsSince1970
         do {
             let story = try decoder.decode(Story.self, from: jsonData)
+            XCTAssertEqual(story.id, 8863)
             XCTAssertEqual(story.author, "dhouston")
             XCTAssertEqual(story.points, 111)
             XCTAssertEqual(
@@ -112,6 +113,7 @@ final class StoryTests: XCTestCase {
         decoder.dateDecodingStrategy = .secondsSince1970
         do {
             let story = try decoder.decode(Story.self, from: jsonData)
+            XCTAssertEqual(story.id, 121003)
             XCTAssertEqual(story.author, "tel")
             XCTAssertEqual(story.points, 25)
             XCTAssertEqual(story.commentCount, 16)

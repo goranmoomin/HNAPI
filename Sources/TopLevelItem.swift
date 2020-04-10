@@ -4,6 +4,13 @@ enum TopLevelItem {
     case story(Story)
     case job(Job)
 
+    var id: Int {
+        switch self {
+        case let .story(story): return story.id
+        case let .job(job): return job.id
+        }
+    }
+
     var story: Story? {
         switch self {
         case let .story(story): return story
