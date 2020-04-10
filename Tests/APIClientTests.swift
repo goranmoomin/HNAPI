@@ -2,7 +2,7 @@ import XCTest
 
 @testable import HNAPI
 
-final class AlgoliaAPIClientTests: XCTestCase {
+final class APIClientTests: XCTestCase {
     class MockClient: NetworkClient {
         enum Error: Swift.Error { case unknown }
         func request(to endpoint: Endpoint, completionHandler: @escaping Completion) {
@@ -399,8 +399,8 @@ final class AlgoliaAPIClientTests: XCTestCase {
         }
     }
 
-    let client: AlgoliaAPIClient = {
-        let client = AlgoliaAPIClient()
+    let client: APIClient = {
+        let client = APIClient()
         client.networkClient = MockClient()
         return client
     }()

@@ -2,9 +2,9 @@ import XCTest
 
 @testable import HNAPI
 
-final class AlgoliaAPIClientIntegrationTests: XCTestCase {
+final class APIClientIntegrationTests: XCTestCase {
     func testLoadingTopItems() {
-        let client = AlgoliaAPIClient()
+        let client = APIClient()
         let expectation = self.expectation(description: "Expect for items to be loaded")
         client.topItems { result in
             guard case let .success(items) = result else {

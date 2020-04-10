@@ -1,6 +1,6 @@
 import Foundation
 
-class AlgoliaAPIClient {
+class APIClient {
     // MARK: - Properties
 
     var networkClient: NetworkClient = URLSession.shared
