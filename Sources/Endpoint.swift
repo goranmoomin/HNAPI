@@ -11,6 +11,7 @@ struct Endpoint {
 extension Endpoint {
     static var algoliaBase = URL(string: "https://hn.algolia.com/api/v1/")!
     static var firebaseBase = URL(string: "https://hacker-news.firebaseio.com/v0/")!
+    static var hnBase = URL(string: "https://news.ycombinator.com/")!
 
     static func algolia(id: Int) -> Endpoint {
         var components = URLComponents()
@@ -44,6 +45,14 @@ extension Endpoint {
 
     static func firebase(category: Category) -> Endpoint {
         let url = firebaseBase.appendingPathComponent("\(category.rawValue).json")
+        return Endpoint(url: url)
+    }
+
+    static func hn(id: Int) -> Endpoint {
+        var components = URLComponents()
+        components.path += "item"
+        components.queryItems = [URLQueryItem(name: "id", value: "\(id)")]
+        let url = components.url(relativeTo: hnBase)!
         return Endpoint(url: url)
     }
 }

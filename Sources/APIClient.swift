@@ -58,13 +58,24 @@ class APIClient {
                 completionHandler(.failure(result.failure!))
                 return
             }
-            let pageResult = Result<Page, Error> {
+            do {
                 let algoliaItem = try self.decoder.decode(AlgoliaItem.self, from: data)
-                // TODO: Fetch HN & reorder the comment tree
-                let comments = algoliaItem.children
-                return Page(item: item, children: comments)
-            }
-            completionHandler(pageResult)
+                var comments = algoliaItem.children
+                // TODO: Fetch HN & Algolia API concurrently
+                self.networkClient.request(to: .hn(id: item.id)) { result in
+                    guard case let .success((data, _)) = result else {
+                        completionHandler(.failure(result.failure!))
+                        return
+                    }
+                    let html = String(data: data, encoding: .utf8)!
+                    do {
+                        let parser = try HNParser(html: html)
+                        comments = parser.sortedCommentTree(original: comments)
+                        let page = Page(item: item, children: comments)
+                        completionHandler(.success(page))
+                    } catch { completionHandler(.failure(error)) }
+                }
+            } catch { completionHandler(.failure(error)) }
         }
     }
 }
