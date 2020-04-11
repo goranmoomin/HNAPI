@@ -18,9 +18,15 @@ class HNParser {
         return ids
     }
 
-    func commTextEl(id: Int) -> Element {
+    func aThingEl(id: Int) -> Element {
         // FIXME: Error handling
         let aThingEl = try! document.select(".athing.comtr#\(id)").array()[0]
+        return aThingEl
+    }
+
+    func commTextEl(id: Int) -> Element {
+        let aThingEl = self.aThingEl(id: id)
+        // FIXME: Error handling
         let commTextEl = try! aThingEl.select(".commtext").array()[0]
         return commTextEl
     }
@@ -37,6 +43,41 @@ class HNParser {
             }
         }
         return commentColors
+    }
+
+    func voteLinkEls(id: Int) -> [Element] {
+        let aThingEl = self.aThingEl(id: id)
+        let voteLinkEls = try! aThingEl.select(".votelinks a:has(.votearrow):not(.nosee)").array()
+        return voteLinkEls
+    }
+
+    func actions() -> [Int: Set<Action>] {
+        var actions: [Int: Set<Action>] = [:]
+        let base = URL(string: "https://news.ycombinator.com")!
+        // TODO: Add getting story action
+        for id in ids() {
+            var actionSet: Set<Action> = []
+            let voteLinkEls = self.voteLinkEls(id: id)
+            for voteLinkEl in voteLinkEls {
+                let href = try! voteLinkEl.attr("href")
+                guard let url = URL(string: href, relativeTo: base),
+                    let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+                else { continue }
+                if components.queryItems?.contains(where: { $0.name == "auth" }) == false {
+                    continue
+                }
+                // FIXME: Error handling
+                let voteArrowEl = try! voteLinkEl.select(".votearrow").array()[0]
+                let title = try! voteArrowEl.attr("title")
+                switch title {
+                case "upvote": actionSet.insert(.upvote(url))
+                case "downvote": actionSet.insert(.downvote(url))
+                default: break
+                }
+            }
+            actions[id] = actionSet  // TODO: Add getting unvoting action
+        }
+        return actions
     }
 
     func sortedCommentTree(original: [Comment]) -> [Comment] {

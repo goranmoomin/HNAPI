@@ -397,24 +397,24 @@ final class APIClientTests: XCTestCase {
                 completionHandler(.success((jsonData, URLResponse())))
             } else if endpoint.url.absoluteString == "https://news.ycombinator.com/item?id=1" {
                 let htmlData = #"""
-                    <html op="item"><head><meta name="referrer" content="origin"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" type="text/css" href="news.css?8TojdIkfXE2jenmubhu1">
+                    <html op="item"><head><meta name="referrer" content="origin"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" type="text/css" href="news.css?y8aWzq4VWgqzCJyK51Vk">
                             <link rel="shortcut icon" href="favicon.ico">
                             <title>Y Combinator | Hacker News</title></head><body><center><table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
                             <tr><td bgcolor="#ff6600"><table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px"><tr><td style="width:18px;padding-right:4px"><a href="https://news.ycombinator.com"><img src="y18.gif" width="18" height="18" style="border:1px white solid;"></a></td>
                                       <td style="line-height:12pt; height:10px;"><span class="pagetop"><b class="hnname"><a href="news">Hacker News</a></b>
-                                  <a href="newest">new</a> | <a href="front">past</a> | <a href="newcomments">comments</a> | <a href="ask">ask</a> | <a href="show">show</a> | <a href="jobs">jobs</a> | <a href="submit">submit</a>            </span></td><td style="text-align:right;padding-right:4px;"><span class="pagetop">
-                                                  <a href="login?goto=item%3Fid%3D1">login</a>
-                                              </span></td>
+                                  <a href="newest">new</a> | <a href="threads?id=hntestacc">threads</a> | <a href="front">past</a> | <a href="newcomments">comments</a> | <a href="ask">ask</a> | <a href="show">show</a> | <a href="jobs">jobs</a> | <a href="submit">submit</a>            </span></td><td style="text-align:right;padding-right:4px;"><span class="pagetop">
+                                                  <a id='me' href="user?id=hntestacc">hntestacc</a>                (1) |
+                                    <a id='logout' href="logout?auth=6ddbe2f9205c3aef7269824b9b6ad2a5d5a684c1&amp;goto=item%3Fid%3D1">logout</a>                          </span></td>
                                   </tr></table></td></tr>
                     <tr id="pagespace" title="Y Combinator" style="height:10px"></tr><tr><td><table class="fatitem" border="0">
                             <tr class='athing' id='1'>
-                          <td align="right" valign="top" class="title"><span class="rank"></span></td>      <td valign="top" class="votelinks"><center><a id='up_1' href='vote?id=1&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="title"><a href="http://ycombinator.com" class="storylink">Y Combinator</a><span class="sitebit comhead"> (<a href="from?site=ycombinator.com"><span class="sitestr">ycombinator.com</span></a>)</span></td></tr><tr><td colspan="2"></td><td class="subtext">
-                            <span class="score" id="score_1">57 points</span> by <a href="user?id=pg" class="hnuser">pg</a> <span class="age"><a href="item?id=1">on Oct 9, 2006</a></span> <span id="unv_1"></span> | <a href="hide?id=1&amp;goto=item%3Fid%3D1">hide</a> | <a href="https://hn.algolia.com/?query=Y%20Combinator&sort=byDate&dateRange=all&type=story&storyText=false&prefix&page=0" class="hnpast">past</a> | <a href="https://www.google.com/search?q=Y%20Combinator">web</a> | <a href="fave?id=1&amp;auth=a60f2a4b75b2ef5300e9142ed071c4b23f07168b">favorite</a> | <a href="item?id=1">15&nbsp;comments</a>              </td></tr>
+                          <td align="right" valign="top" class="title"><span class="rank"></span></td>      <td valign="top" class="votelinks"><center><a id='up_1' onclick='return vote(event, this, "up")' href='vote?id=1&amp;how=up&amp;auth=6b3a83dd1ed1672bde24242367f6429f5377b23e&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="title"><a href="http://ycombinator.com" class="storylink">Y Combinator</a><span class="sitebit comhead"> (<a href="from?site=ycombinator.com"><span class="sitestr">ycombinator.com</span></a>)</span></td></tr><tr><td colspan="2"></td><td class="subtext">
+                            <span class="score" id="score_1">57 points</span> by <a href="user?id=pg" class="hnuser">pg</a> <span class="age"><a href="item?id=1">on Oct 9, 2006</a></span> <span id="unv_1"></span> | <a href="hide?id=1&amp;auth=6b3a83dd1ed1672bde24242367f6429f5377b23e&amp;goto=item%3Fid%3D1">hide</a> | <a href="https://hn.algolia.com/?query=Y%20Combinator&sort=byDate&dateRange=all&type=story&storyText=false&prefix&page=0" class="hnpast">past</a> | <a href="https://www.google.com/search?q=Y%20Combinator">web</a> | <a href="fave?id=1&amp;auth=6b3a83dd1ed1672bde24242367f6429f5377b23e">favorite</a> | <a href="item?id=1">19&nbsp;comments</a>              </td></tr>
                             </table><br><br>
                       <table border="0" class='comment-tree'>
                                 <tr class='athing comtr ' id='15'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_15' href='vote?id=15&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
-                              <a href="user?id=sama" class="hnuser">sama</a> <span class="age"><a href="item?id=15">on Oct 9, 2006</a></span> <span id="unv_15"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 15)"></a>          <span class='storyon'></span>
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_15' onclick='return vote(event, this, "up")' href='vote?id=15&amp;how=up&amp;auth=ac3e098260a5b7b36ea85b30fa7c73659c50517a&amp;goto=item%3Fid%3D1#15' class='nosee'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                              <a href="user?id=sama" class="hnuser">sama</a> <span class="age"><a href="item?id=15">on Oct 9, 2006</a></span> <span id="unv_15"> | <a id='un_15' onclick='return vote(event, this, "un")' href='vote?id=15&amp;how=un&amp;auth=ac3e098260a5b7b36ea85b30fa7c73659c50517a&amp;goto=item%3Fid%3D1#15'>unvote</a></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 15)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">&#34;the rising star of venture capital&#34; -unknown VC eating lunch on SHR</span>
                                   <div class='reply'>        <p><font size="1">
@@ -422,7 +422,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                             <tr class='athing comtr ' id='17'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_17' href='vote?id=17&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_17' onclick='return vote(event, this, "up")' href='vote?id=17&amp;how=up&amp;auth=be985ad57bbc9341c6ad15517c2d502c45b968dc&amp;goto=item%3Fid%3D1#17'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=pg" class="hnuser">pg</a> <span class="age"><a href="item?id=17">on Oct 9, 2006</a></span> <span id="unv_17"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 17)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">Is there anywhere to eat on Sandhill Road?</span>
@@ -431,7 +431,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                             <tr class='athing comtr ' id='1079'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_1079' href='vote?id=1079&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_1079' onclick='return vote(event, this, "up")' href='vote?id=1079&amp;how=up&amp;auth=beba6e283e6f6adbc05bfbb507996a8e361b8975&amp;goto=item%3Fid%3D1#1079'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=dmon" class="hnuser">dmon</a> <span class="age"><a href="item?id=1079">on Feb 25, 2007</a></span> <span id="unv_1079"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 1079)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">sure</span>
@@ -440,7 +440,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                                       <tr class='athing comtr ' id='234509'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_234509' href='vote?id=234509&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_234509' onclick='return vote(event, this, "up")' href='vote?id=234509&amp;how=up&amp;auth=f467e89792d6ccad7f1ace08aa70f9a12cd167a1&amp;goto=item%3Fid%3D1#234509'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=kleevr" class="hnuser">kleevr</a> <span class="age"><a href="item?id=234509">on July 2, 2008</a></span> <span id="unv_234509"></span><span class="par"></span> <a class="togg" n="11" href="javascript:void(0)" onclick="return toggle(event, 234509)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">sequential numbering
@@ -450,7 +450,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                             <tr class='athing comtr ' id='234621'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_234621' href='vote?id=234621&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_234621' onclick='return vote(event, this, "up")' href='vote?id=234621&amp;how=up&amp;auth=9e2e0f4ddb11af0945922f7d4a157c58a79e3283&amp;goto=item%3Fid%3D1#234621'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=kleevr" class="hnuser">kleevr</a> <span class="age"><a href="item?id=234621">on July 2, 2008</a></span> <span id="unv_234621"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 234621)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">I guess that news.yc is 1-indexed :)<p><a href="http://news.ycombinator.com/item?id=0" rel="nofollow">http://news.ycombinator.com/item?id=0</a> , DNE</span>
@@ -459,7 +459,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                         <tr class='athing comtr ' id='234560'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_234560' href='vote?id=234560&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_234560' onclick='return vote(event, this, "up")' href='vote?id=234560&amp;how=up&amp;auth=2aa94b8a1a8d87bd29f0734484de5716bb1c8b4f&amp;goto=item%3Fid%3D1#234560'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=sebg" class="hnuser">sebg</a> <span class="age"><a href="item?id=234560">on July 2, 2008</a></span> <span id="unv_234560"></span><span class="par"></span> <a class="togg" n="4" href="javascript:void(0)" onclick="return toggle(event, 234560)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">Interesting - post 1 has comments.  no more comments until post 15.  which then has the same conversation between pg and dnom as the first post.  To top it off, post 17 is the conversation in posts 1 and 15.</span>
@@ -468,7 +468,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                             <tr class='athing comtr ' id='234593'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_234593' href='vote?id=234593&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_234593' onclick='return vote(event, this, "up")' href='vote?id=234593&amp;how=up&amp;auth=01f7db276ccd10e0fc8f449ca4055ddc5077fbc1&amp;goto=item%3Fid%3D1#234593'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=kleevr" class="hnuser">kleevr</a> <span class="age"><a href="item?id=234593">on July 2, 2008</a></span> <span id="unv_234593"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 234593)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">I'm sure the first fifteen were used primarily to populate the burgeoning news.yc</span>
@@ -477,7 +477,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                         <tr class='athing comtr ' id='234568'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_234568' href='vote?id=234568&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_234568' onclick='return vote(event, this, "up")' href='vote?id=234568&amp;how=up&amp;auth=62ed17641aa9754c1921493cb9d6d93d0652d6c7&amp;goto=item%3Fid%3D1#234568'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=byrneseyeview" class="hnuser">byrneseyeview</a> <span class="age"><a href="item?id=234568">on July 2, 2008</a></span> <span id="unv_234568"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 234568)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">I think those 'items' are comments, not posts.</span>
@@ -486,7 +486,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                             <tr class='athing comtr ' id='234633'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_234633' href='vote?id=234633&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_234633' onclick='return vote(event, this, "up")' href='vote?id=234633&amp;how=up&amp;auth=896d4824a5db0a03ef10f2deb5e414cd43383f8f&amp;goto=item%3Fid%3D1#234633'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=kleevr" class="hnuser">kleevr</a> <span class="age"><a href="item?id=234633">on July 2, 2008</a></span> <span id="unv_234633"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 234633)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">items: comments || posts...
@@ -496,7 +496,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                             <tr class='athing comtr ' id='234548'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_234548' href='vote?id=234548&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="40"></td><td valign="top" class="votelinks"><center><a id='up_234548' onclick='return vote(event, this, "up")' href='vote?id=234548&amp;how=up&amp;auth=74141c432dedccf27f7d7e091be2023b55b036b8&amp;goto=item%3Fid%3D1#234548'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=byrneseyeview" class="hnuser">byrneseyeview</a> <span class="age"><a href="item?id=234548">on July 2, 2008</a></span> <span id="unv_234548"></span><span class="par"></span> <a class="togg" n="5" href="javascript:void(0)" onclick="return toggle(event, 234548)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">I think I agree?</span>
@@ -505,7 +505,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                             <tr class='athing comtr ' id='234549'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_234549' href='vote?id=234549&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="80"></td><td valign="top" class="votelinks"><center><a id='up_234549' onclick='return vote(event, this, "up")' href='vote?id=234549&amp;how=up&amp;auth=381e0fe299e138a3852c3fd899ba1471b5cf61d8&amp;goto=item%3Fid%3D1#234549'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=kf" class="hnuser">kf</a> <span class="age"><a href="item?id=234549">on July 2, 2008</a></span> <span id="unv_234549"></span><span class="par"></span> <a class="togg" n="4" href="javascript:void(0)" onclick="return toggle(event, 234549)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">i hear that there is an awesome easter egg in the -100s somewhere</span>
@@ -514,7 +514,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                             <tr class='athing comtr ' id='234551'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_234551' href='vote?id=234551&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="120"></td><td valign="top" class="votelinks"><center><a id='up_234551' onclick='return vote(event, this, "up")' href='vote?id=234551&amp;how=up&amp;auth=f5efd3b111d6962e98e29f7ca6391298efc39a2f&amp;goto=item%3Fid%3D1#234551'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=byrneseyeview" class="hnuser">byrneseyeview</a> <span class="age"><a href="item?id=234551">on July 2, 2008</a></span> <span id="unv_234551"></span><span class="par"></span> <a class="togg" n="3" href="javascript:void(0)" onclick="return toggle(event, 234551)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">How many people are lurking on this thread?</span>
@@ -523,7 +523,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                             <tr class='athing comtr ' id='234567'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="160"></td><td valign="top" class="votelinks"><center><a id='up_234567' href='vote?id=234567&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="160"></td><td valign="top" class="votelinks"><center><a id='up_234567' onclick='return vote(event, this, "up")' href='vote?id=234567&amp;how=up&amp;auth=54c266dbe8641fcac9f304217083792bb8f20cdd&amp;goto=item%3Fid%3D1#234567'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=kf" class="hnuser">kf</a> <span class="age"><a href="item?id=234567">on July 2, 2008</a></span> <span id="unv_234567"></span><span class="par"></span> <a class="togg" n="2" href="javascript:void(0)" onclick="return toggle(event, 234567)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">it's the new comments page for me...</span>
@@ -532,7 +532,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                             <tr class='athing comtr ' id='234580'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="200"></td><td valign="top" class="votelinks"><center><a id='up_234580' href='vote?id=234580&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="200"></td><td valign="top" class="votelinks"><center><a id='up_234580' onclick='return vote(event, this, "up")' href='vote?id=234580&amp;how=up&amp;auth=41e46ab47759d8cac85365bb5f8b0fbb2f267414&amp;goto=item%3Fid%3D1#234580'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=sebg" class="hnuser">sebg</a> <span class="age"><a href="item?id=234580">on July 2, 2008</a></span> <span id="unv_234580"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 234580)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">ditto.  (thanks for pointing out posts vs. items.)</span>
@@ -541,7 +541,7 @@ final class APIClientTests: XCTestCase {
                           </div></div></td></tr>
                           </table></td></tr>
                                             <tr class='athing comtr ' id='487171'><td>
-                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_487171' href='vote?id=487171&amp;how=up&amp;goto=item%3Fid%3D1'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
+                                <table border='0'>  <tr>    <td class='ind'><img src="s.gif" height="1" width="0"></td><td valign="top" class="votelinks"><center><a id='up_487171' onclick='return vote(event, this, "up")' href='vote?id=487171&amp;how=up&amp;auth=3b25f6f392bada7b7c316802103ff0a6b70c4530&amp;goto=item%3Fid%3D1#487171'><div class='votearrow' title='upvote'></div></a></center></td><td class="default"><div style="margin-top:2px; margin-bottom:-10px;"><span class="comhead">
                               <a href="user?id=jacquesm" class="hnuser">jacquesm</a> <span class="age"><a href="item?id=487171">on Feb 19, 2009</a></span> <span id="unv_487171"></span><span class="par"></span> <a class="togg" n="1" href="javascript:void(0)" onclick="return toggle(event, 487171)"></a>          <span class='storyon'></span>
                                       </span></div><br><div class="comment">
                                       <span class="commtext c00">So, just to see how hard it is to make the longest span between article and comment :)<p>Congratulations on your second birthday YC, and thanks to Paul Graham for writing this forum. I had a really good look at the good a few days ago and I was quite impressed with how elegant the whole thing is put together.<p>Lisp would not be my language of choice for a website like this, and yet, after seeing how concise it was I'm tempted to play around with lisp in a web environment.</span>
@@ -601,7 +601,7 @@ final class APIClientTests: XCTestCase {
                             | <a href="mailto:hn@ycombinator.com">Contact</a></span><br><br><form method="get" action="//hn.algolia.com/">Search:
                               <input type="text" name="q" value="" size="17" autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="false"></form>
                                 </center></td></tr>
-                          </table></center></body><script type='text/javascript' src='hn.js?8TojdIkfXE2jenmubhu1'></script></html>
+                          </table></center></body><script type='text/javascript' src='hn.js?y8aWzq4VWgqzCJyK51Vk'></script></html>
                     """#
                     .data(using: .utf8)!
                 completionHandler(.success((htmlData, URLResponse())))
@@ -643,6 +643,8 @@ final class APIClientTests: XCTestCase {
                 XCTAssertEqual(page.children[0].children[0].children[0].text, "<p>sure</p>")
                 XCTAssertEqual(page.children[0].color, .c00)
                 XCTAssertEqual(page.children[4].color, .cdd)
+                XCTAssertEqual(page.actions[15]?.count, 0)
+                XCTAssertEqual(page.actions[17]?.count, 1)
             }
         }
     }

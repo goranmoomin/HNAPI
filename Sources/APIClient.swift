@@ -71,7 +71,8 @@ class APIClient {
                     do {
                         let parser = try HNParser(html: html)
                         comments = parser.sortedCommentTree(original: comments)
-                        let page = Page(item: item, children: comments)
+                        let actions = parser.actions()
+                        let page = Page(item: item, children: comments, actions: actions)
                         completionHandler(.success(page))
                     } catch { completionHandler(.failure(error)) }
                 }
