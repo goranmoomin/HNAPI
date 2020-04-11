@@ -6,7 +6,7 @@ final class APIClientTests: XCTestCase {
     class MockClient: NetworkClient {
         enum Error: Swift.Error { case unknown }
         func request(to endpoint: Endpoint, completionHandler: @escaping Completion) {
-            if endpoint.url.absoluteString
+            if endpoint.url?.absoluteString
                 == "https://hn.algolia.com/api/v1/search?tags=(story,job,poll),(story_1)&hitsPerPage=1"
             {
                 let jsonData = """
@@ -63,8 +63,8 @@ final class APIClientTests: XCTestCase {
                     }
                     """
                     .data(using: .utf8)!
-                completionHandler(.success((jsonData, URLResponse())))
-            } else if endpoint.url.absoluteString == "https://hn.algolia.com/api/v1/items/1" {
+                completionHandler(.success((jsonData, HTTPURLResponse())))
+            } else if endpoint.url?.absoluteString == "https://hn.algolia.com/api/v1/items/1" {
                 let jsonData = #"""
                     {
                       "id": 1,
@@ -394,8 +394,8 @@ final class APIClientTests: XCTestCase {
 
                     """#
                     .data(using: .utf8)!
-                completionHandler(.success((jsonData, URLResponse())))
-            } else if endpoint.url.absoluteString == "https://news.ycombinator.com/item?id=1" {
+                completionHandler(.success((jsonData, HTTPURLResponse())))
+            } else if endpoint.url?.absoluteString == "https://news.ycombinator.com/item?id=1" {
                 let htmlData = #"""
                     <html op="item"><head><meta name="referrer" content="origin"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" type="text/css" href="news.css?y8aWzq4VWgqzCJyK51Vk">
                             <link rel="shortcut icon" href="favicon.ico">
@@ -604,7 +604,7 @@ final class APIClientTests: XCTestCase {
                           </table></center></body><script type='text/javascript' src='hn.js?y8aWzq4VWgqzCJyK51Vk'></script></html>
                     """#
                     .data(using: .utf8)!
-                completionHandler(.success((htmlData, URLResponse())))
+                completionHandler(.success((htmlData, HTTPURLResponse())))
             } else { completionHandler(.failure(Error.unknown)) }
         }
     }

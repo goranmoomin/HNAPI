@@ -1,9 +1,32 @@
 import Foundation
 
 class APIClient {
+    // MARK: - Error
+
+    enum APIError: Error { case loginFailed }
+
     // MARK: - Properties
 
-    var networkClient: NetworkClient = URLSession.shared
+    var networkClient: NetworkClient = {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.httpShouldSetCookies = false
+        return URLSession(configuration: configuration)
+    }()
+
+    var networkClientWithoutRedirection: NetworkClient = {
+        class Delegate: NSObject, URLSessionTaskDelegate {
+            public func urlSession(
+                _ session: URLSession, task: URLSessionTask,
+                willPerformHTTPRedirection response: HTTPURLResponse,
+                newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void
+            ) { completionHandler(nil) }
+        }
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.httpShouldSetCookies = false
+        let delegate = Delegate()
+        return URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
+    }()
+
     let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
@@ -77,6 +100,28 @@ class APIClient {
                     } catch { completionHandler(.failure(error)) }
                 }
             } catch { completionHandler(.failure(error)) }
+        }
+    }
+
+    // MARK: - Authentication
+
+    func login(
+        userName: String, password: String,
+        completionHandler: @escaping (Result<Token, Error>) -> Void
+    ) {
+        networkClientWithoutRedirection.request(to: .hn(userName: userName, password: password)) {
+            result in
+            guard case let .success((_, response)) = result else {
+                completionHandler(.failure(result.failure!))
+                return
+            }
+            // FIXME: Error handling
+            let headerFields = response.allHeaderFields as! [String: String]
+            let base = URL(string: "https://news.ycombinator.com/")!
+            let cookies = HTTPCookie.cookies(withResponseHeaderFields: headerFields, for: base)
+            if let token = cookies.first(where: { $0.name == "user" }) {
+                completionHandler(.success(token))
+            } else { completionHandler(.failure(APIError.loginFailed)) }
         }
     }
 }

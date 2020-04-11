@@ -1,7 +1,7 @@
 import Foundation
 
 protocol NetworkClient {
-    typealias Completion = (Result<(Data, URLResponse), Error>) -> Void
+    typealias Completion = (Result<(Data, HTTPURLResponse), Error>) -> Void
 
     func request(to endpoint: Endpoint, completionHandler: @escaping Completion)
 }
@@ -12,7 +12,8 @@ extension URLSession: NetworkClient {
     ) -> (Data?, URLResponse?, Error?) -> Void {
         let adapter = { (data: Data?, response: URLResponse?, error: Error?) in
             if let data = data, let response = response {
-                completionHandler(.success((data, response)))
+                // FIXME: Error handling
+                completionHandler(.success((data, response as! HTTPURLResponse)))
             } else if let error = error { completionHandler(.failure(error)) } else {
                 preconditionFailure("Data and Error can't both be nil")
             }
@@ -21,8 +22,8 @@ extension URLSession: NetworkClient {
     }
 
     func request(to endpoint: Endpoint, completionHandler: @escaping Completion) {
-        let url = endpoint.url
-        let dataTask = self.dataTask(with: url, completionHandler: Self.adapter(completionHandler))
+        let dataTask = self.dataTask(
+            with: endpoint, completionHandler: Self.adapter(completionHandler))
         dataTask.resume()
     }
 }

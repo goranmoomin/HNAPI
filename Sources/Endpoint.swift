@@ -1,10 +1,6 @@
 import Foundation
 
-struct Endpoint {
-    // MARK: - Properties
-
-    var url: URL
-}
+typealias Endpoint = URLRequest
 
 // MARK: - Convenience Static Methods
 
@@ -48,10 +44,22 @@ extension Endpoint {
         return Endpoint(url: url)
     }
 
-    static func hn(id: Int) -> Endpoint {
+    static func hn(id: Int, token: Token? = nil) -> Endpoint {
         var components = URLComponents()
         components.path += "item"
         components.queryItems = [URLQueryItem(name: "id", value: "\(id)")]
+        let url = components.url(relativeTo: hnBase)!
+        var endpoint = Endpoint(url: url)
+        if let token = token { endpoint.add(token) }
+        return endpoint
+    }
+
+    static func hn(userName: String, password: String) -> Endpoint {
+        var components = URLComponents()
+        components.path += "login"
+        components.queryItems = [
+            URLQueryItem(name: "acct", value: userName), URLQueryItem(name: "pw", value: password),
+        ]
         let url = components.url(relativeTo: hnBase)!
         return Endpoint(url: url)
     }

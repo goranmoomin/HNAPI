@@ -40,4 +40,19 @@ final class APIClientIntegrationTests: XCTestCase {
         }
         waitForExpectations(timeout: .infinity, handler: nil)
     }
+
+    func testLoggingIn() {
+        let client = APIClient()
+        let expectation = self.expectation(description: "Expect for login to succeed")
+        client.login(userName: "hntestacc", password: "hntestpwd") { result in
+            guard case let .success(token) = result else {
+                XCTFail("Error \(result.failure!) thrown.")
+                expectation.fulfill()
+                return
+            }
+            XCTAssertEqual(token.name, "user")
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: .infinity, handler: nil)
+    }
 }
