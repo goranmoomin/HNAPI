@@ -75,7 +75,10 @@ class APIClient {
 
     struct AlgoliaItem: Decodable { var children: [Comment] }
 
-    func page(item: TopLevelItem, completionHandler: @escaping (Result<Page, Error>) -> Void) {
+    func page(
+        item: TopLevelItem, token: Token? = nil,
+        completionHandler: @escaping (Result<Page, Error>) -> Void
+    ) {
         networkClient.request(to: .algolia(id: item.id)) { result in
             guard case let .success((data, _)) = result else {
                 completionHandler(.failure(result.failure!))
@@ -85,7 +88,7 @@ class APIClient {
                 let algoliaItem = try self.decoder.decode(AlgoliaItem.self, from: data)
                 var comments = algoliaItem.children
                 // TODO: Fetch HN & Algolia API concurrently
-                self.networkClient.request(to: .hn(id: item.id)) { result in
+                self.networkClient.request(to: .hn(id: item.id, token: token)) { result in
                     guard case let .success((data, _)) = result else {
                         completionHandler(.failure(result.failure!))
                         return

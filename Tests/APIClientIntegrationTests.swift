@@ -50,8 +50,23 @@ final class APIClientIntegrationTests: XCTestCase {
                 expectation.fulfill()
                 return
             }
-            XCTAssertEqual(token.name, "user")
-            expectation.fulfill()
+            client.items(ids: [1]) { result in
+                guard case let .success(items) = result else {
+                    XCTFail("Error \(result.failure!) thrown.")
+                    expectation.fulfill()
+                    return
+                }
+                let item = items[0]
+                client.page(item: item, token: token) { result in
+                    guard case let .success(page) = result else {
+                        XCTFail("Error \(result.failure!) thrown.")
+                        expectation.fulfill()
+                        return
+                    }
+                    XCTAssertEqual(page.actions[17]?.count, 1)
+                    expectation.fulfill()
+                }
+            }
         }
         waitForExpectations(timeout: .infinity, handler: nil)
     }
