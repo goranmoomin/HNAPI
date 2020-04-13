@@ -48,7 +48,12 @@ class APIClient {
             }
             let itemsResult = Result<[TopLevelItem], Error> {
                 let queryResult = try self.decoder.decode(QueryResult.self, from: data)
-                return queryResult.hits
+                let hits = queryResult.hits.sorted { left, right in
+                    guard let leftIndex = ids.firstIndex(of: left.id) else { return false }
+                    guard let rightIndex = ids.firstIndex(of: right.id) else { return true }
+                    return leftIndex < rightIndex
+                }
+                return hits
             }
             completionHandler(itemsResult)
         }
