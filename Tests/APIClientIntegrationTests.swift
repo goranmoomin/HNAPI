@@ -18,6 +18,20 @@ final class APIClientIntegrationTests: XCTestCase {
         waitForExpectations(timeout: .infinity, handler: nil)
     }
 
+    func testSearchingItems() {
+        let client = APIClient()
+        let expectation = self.expectation(description: "Expect for items to be loaded")
+        client.items(query: "foo") { result in
+            guard case .success = result else {
+                XCTFail("Error \(result.failure!) thrown.")
+                expectation.fulfill()
+                return
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: .infinity, handler: nil)
+    }
+
     func testLoadingPage() {
         let client = APIClient()
         let expectation = self.expectation(description: "Expect for page to be loaded")

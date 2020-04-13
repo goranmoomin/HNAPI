@@ -64,6 +64,926 @@ final class APIClientTests: XCTestCase {
                     """
                     .data(using: .utf8)!
                 completionHandler(.success((jsonData, HTTPURLResponse())))
+            } else if endpoint.url?.absoluteString
+                == "https://hn.algolia.com/api/v1/search?tags=(story,job,poll)&query=foo"
+            {
+                let jsonData = #"""
+                    {
+                      "hits": [
+                        {
+                          "created_at": "2017-06-16T13:03:09.000Z",
+                          "title": "Amazon to Acquire Whole Foods for $13.7B",
+                          "url": "https://www.bloomberg.com/news/articles/2017-06-16/amazon-to-buy-whole-foods?cmpid=socialflow-twitter-business&utm_content=business&utm_campaign=socialflow-organic&utm_source=twitter&utm_medium=social",
+                          "author": "whatok",
+                          "points": 1687,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 824,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1497618189,
+                          "relevancy_score": 7487,
+                          "_tags": [
+                            "story",
+                            "author_whatok",
+                            "story_14568468"
+                          ],
+                          "objectID": "14568468",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Amazon to Acquire Whole <em>Foo</em>ds for $13.7B",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://www.bloomberg.com/news/articles/2017-06-16/amazon-to-buy-whole-<em>foo</em>ds?cmpid=socialflow-twitter-business&utm_content=business&utm_campaign=socialflow-organic&utm_source=twitter&utm_medium=social",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "whatok",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2011-09-23T13:24:09.000Z",
+                          "title": "I was once a Facebook fool",
+                          "url": "http://public.numair.com/2011_fbfool.html",
+                          "author": "numair",
+                          "points": 1368,
+                          "story_text": "",
+                          "comment_text": null,
+                          "num_comments": 168,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1316784249,
+                          "relevancy_score": 3469,
+                          "_tags": [
+                            "story",
+                            "author_numair",
+                            "story_3029872"
+                          ],
+                          "objectID": "3029872",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "I was once a Facebook <em>foo</em>l",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "http://public.numair.com/2011_fbfool.html",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "author": {
+                              "value": "numair",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "story_text": {
+                              "value": "",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2019-04-01T11:48:38.000Z",
+                          "title": "Burger King is introducing a vegetarian patty from the start-up Impossible Foods",
+                          "url": "https://www.nytimes.com/2019/04/01/technology/burger-king-impossible-whopper.html",
+                          "author": "charliepark",
+                          "points": 848,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 637,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1554119318,
+                          "relevancy_score": 8750,
+                          "_tags": [
+                            "story",
+                            "author_charliepark",
+                            "story_19542379"
+                          ],
+                          "objectID": "19542379",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Burger King is introducing a vegetarian patty from the start-up Impossible <em>Foo</em>ds",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://www.nytimes.com/2019/04/01/technology/burger-king-impossible-whopper.html",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "author": {
+                              "value": "charliepark",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2018-05-10T22:58:15.000Z",
+                          "title": "Emails Show FDA Chemists Have Been Finding Glyphosate in Food",
+                          "url": "https://modernfarmer.com/2018/05/emails-show-fda-chemists-have-been-quietly-finding-glyphosate-in-food/",
+                          "author": "clumsysmurf",
+                          "points": 691,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 316,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1525993095,
+                          "relevancy_score": 8119,
+                          "_tags": [
+                            "story",
+                            "author_clumsysmurf",
+                            "story_17043629"
+                          ],
+                          "objectID": "17043629",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Emails Show FDA Chemists Have Been Finding Glyphosate in <em>Foo</em>d",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://modernfarmer.com/2018/05/emails-show-fda-chemists-have-been-quietly-finding-glyphosate-in-<em>foo</em>d/",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "clumsysmurf",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2019-07-26T18:59:17.000Z",
+                          "title": "How is China able to provide enough food to feed over 1B people?",
+                          "url": "https://www.quora.com/How-is-China-able-to-provide-enough-food-to-feed-its-population-of-over-1-billion-people-Do-they-import-food-or-are-they-self-sustainable?share=1",
+                          "author": "carapace",
+                          "points": 594,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 330,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1564167557,
+                          "relevancy_score": 8966,
+                          "_tags": [
+                            "story",
+                            "author_carapace",
+                            "story_20537409"
+                          ],
+                          "objectID": "20537409",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "How is China able to provide enough <em>foo</em>d to feed over 1B people?",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://www.quora.com/How-is-China-able-to-provide-enough-<em>foo</em>d-to-feed-its-population-of-over-1-billion-people-Do-they-import-<em>foo</em>d-or-are-they-self-sustainable?share=1",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "carapace",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2015-04-01T06:49:10.000Z",
+                          "title": "List of April Fools' Day Announcements",
+                          "url": null,
+                          "author": "conroy",
+                          "points": 592,
+                          "story_text": "Instead of cluttering the front page with fake product announcements, let&#x27;s just post them in here instead. One thread where each top-level comment is just a title and a link.",
+                          "comment_text": null,
+                          "num_comments": 538,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1427870950,
+                          "relevancy_score": 5942,
+                          "_tags": [
+                            "story",
+                            "author_conroy",
+                            "story_9302010"
+                          ],
+                          "objectID": "9302010",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "List of April <em>Foo</em>ls' Day Announcements",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "conroy",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "story_text": {
+                              "value": "Instead of cluttering the front page with fake product announcements, let's just post them in here instead. One thread where each top-level comment is just a title and a link.",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2015-08-10T01:52:23.000Z",
+                          "title": "Ask HN: I will help your startup in exchange for food and a place to stay",
+                          "url": null,
+                          "author": "codeornocode",
+                          "points": 584,
+                          "story_text": "Hello,<p>This my third and final time posting this post, first time it was labeled as spam and the second time someone suggested that i edit it and so i did.<p>I have 4 years remaining in my U.S visa, each visit i can stay 6 months, i don&#x27;t want to break any U.S rules that&#x27;s why i want to code for your startup for no money, just food and a place to live in transportation would be nice too but i am not going to take money from you and i am not going to ask your for health insurance or be your employee, i don&#x27;t want to break any rules, i have +8 years of experience in JS, PHP, Ruby mainly as a full stack web developer i also do game development using Unity3D + C#, i&#x27;m a Musician since over 15 years at my free time and i can design sounds and soundtracks i work with many DAWs, i&#x27;m bilingual i speak fluent Arabic and English beside having many more skills.<p>I am doing this because i live in a war torn country, some issues happened and i&#x27;ve lost all my savings, I&#x27;m 31 years old and i don&#x27;t want to spend the rest of my life in this place, i&#x27;ve been to California in 2014 and i loved it so much, i can&#x27;t get an H1B visa because i don&#x27;t have a university degree although i have a high school diploma and a college diploma in business management and e-commerce.<p>If you&#x27;d like to interview me please send me an e-mail to life.will.get.better.2016@gmail.com, thank you.<p>Thank you for reading my post.<p>ps: Please if you can&#x27;t help me at least try not to be negative in the comments i already have enough negativity going on in my life and i could really really use some motivation, but after all you are free to write whatever you want of course and i appreciate it.<p>One more thing, thank you &quot;dang&quot; for telling me about the spam filter and helping me.",
+                          "comment_text": null,
+                          "num_comments": 279,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1439171543,
+                          "relevancy_score": 6197,
+                          "_tags": [
+                            "story",
+                            "author_codeornocode",
+                            "story_10032299",
+                            "ask_hn"
+                          ],
+                          "objectID": "10032299",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Ask HN: I will help your startup in exchange for <em>foo</em>d and a place to stay",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "codeornocode",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "story_text": {
+                              "value": "Hello,<p>This my third and final time posting this post, first time it was labeled as spam and the second time someone suggested that i edit it and so i did.<p>I have 4 years remaining in my U.S visa, each visit i can stay 6 months, i don't want to break any U.S rules that's why i want to code for your startup for no money, just <em>foo</em>d and a place to live in transportation would be nice too but i am not going to take money from you and i am not going to ask your for health insurance or be your employee, i don't want to break any rules, i have +8 years of experience in JS, PHP, Ruby mainly as a full stack web developer i also do game development using Unity3D + C#, i'm a Musician since over 15 years at my free time and i can design sounds and soundtracks i work with many DAWs, i'm bilingual i speak fluent Arabic and English beside having many more skills.<p>I am doing this because i live in a war torn country, some issues happened and i've lost all my savings, I'm 31 years old and i don't want to spend the rest of my life in this place, i've been to California in 2014 and i loved it so much, i can't get an H1B visa because i don't have a university degree although i have a high school diploma and a college diploma in business management and e-commerce.<p>If you'd like to interview me please send me an e-mail to life.will.get.better.2016@gmail.com, thank you.<p>Thank you for reading my post.<p>ps: Please if you can't help me at least try not to be negative in the comments i already have enough negativity going on in my life and i could really really use some motivation, but after all you are free to write whatever you want of course and i appreciate it.<p>One more thing, thank you &quot;dang&quot; for telling me about the spam filter and helping me.",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2017-11-26T17:43:46.000Z",
+                          "title": "Facebook Is the Junk Food of Socializing (2015)",
+                          "url": "http://nautil.us/blog/why-facebook-is-the-junk-food-of-socializing",
+                          "author": "dnetesn",
+                          "points": 571,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 200,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1511718226,
+                          "relevancy_score": 7796,
+                          "_tags": [
+                            "story",
+                            "author_dnetesn",
+                            "story_15782014"
+                          ],
+                          "objectID": "15782014",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Facebook Is the Junk <em>Foo</em>d of Socializing (2015)",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "http://nautil.us/blog/why-facebook-is-the-junk-<em>foo</em>d-of-socializing",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "dnetesn",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2019-04-13T14:20:12.000Z",
+                          "title": "South Korea now recycles 95% of its food waste",
+                          "url": "https://www.weforum.org/agenda/2019/04/south-korea-recycling-food-waste/",
+                          "author": "okket",
+                          "points": 538,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 163,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1555165212,
+                          "relevancy_score": 8764,
+                          "_tags": [
+                            "story",
+                            "author_okket",
+                            "story_19653138"
+                          ],
+                          "objectID": "19653138",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "South Korea now recycles 95% of its <em>foo</em>d waste",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://www.weforum.org/agenda/2019/04/south-korea-recycling-<em>foo</em>d-waste/",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "okket",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2020-03-28T15:24:37.000Z",
+                          "title": "From Spain to Germany, farmers warn of fresh food shortages",
+                          "url": "https://www.bloomberg.com/news/articles/2020-03-27/from-spain-to-germany-farmers-warn-of-fresh-food-shortages",
+                          "author": "montalbano",
+                          "points": 464,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 567,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1585409077,
+                          "_tags": [
+                            "story",
+                            "author_montalbano",
+                            "story_22711661"
+                          ],
+                          "objectID": "22711661",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "From Spain to Germany, farmers warn of fresh <em>foo</em>d shortages",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://www.bloomberg.com/news/articles/2020-03-27/from-spain-to-germany-farmers-warn-of-fresh-<em>foo</em>d-shortages",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "montalbano",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2019-10-21T10:28:23.000Z",
+                          "title": "Amazon is shipping expired food, customers say",
+                          "url": "https://www.cnbc.com/2019/10/20/amazon-is-shipping-expired-baby-formula-and-other-out-of-date-foods.html",
+                          "author": "rahuldottech",
+                          "points": 464,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 217,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1571653703,
+                          "_tags": [
+                            "story",
+                            "author_rahuldottech",
+                            "story_21310697"
+                          ],
+                          "objectID": "21310697",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Amazon is shipping expired <em>foo</em>d, customers say",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://www.cnbc.com/2019/10/20/amazon-is-shipping-expired-baby-formula-and-other-out-of-date-<em>foo</em>ds.html",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "rahuldottech",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2014-04-01T11:18:05.000Z",
+                          "title": "The crushing lameness of April Fools Day on the Internet.",
+                          "url": "",
+                          "author": "hoodoof",
+                          "points": 449,
+                          "story_text": "I have a sense of humor.  Really I do.<p>I just don&#x27;t find being pounded with systematic absurdity for an entire day every year as being very funny.<p>I don&#x27;t know how to solve it.  It seems every single company and publication that communicates via the web has a corporate communications department or something that thinks it&#x27;s a corporate priority to come out with something for April Fools. The Internet systematizes, amplifies, focuses, fully resources, funds, schedules, plans and implements high production value foolery.  Corporate drone: &quot;Larry, Sergey, have you signed off yet on this years $4M April Fools budget? How are we going to attract and recruit the best engineers unless we&#x27;ve got a reputation for the very best and most foolish April Fools trickery?&quot; Ugh.<p>It&#x27;s just kind of silly and boring and makes we wish April 2 would come as soon as possible. As I read the Internet on April 1 I just try to self filter out all the silly unbelievable garbage. Most news sites (including HN) are hardly worth reading April 1.<p>You know when someone who thinks they are funny insists on telling lame jokes, and the audience feels an obligation to give an acknowledging guffaw? It&#x27;s like an whole Internet day worth of that.<p>I feel like the Grinch Who Stole April Fools but really it has to be said.  If you&#x27;ve got it in mind to do some fine ol&#x27; foolin then maybe the classy thing to do is leave the foolin to others and spare us one more depressingly lame absurdity.",
+                          "comment_text": null,
+                          "num_comments": 170,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1396351085,
+                          "relevancy_score": 5243,
+                          "_tags": [
+                            "story",
+                            "author_hoodoof",
+                            "story_7507297"
+                          ],
+                          "objectID": "7507297",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "The crushing lameness of April <em>Foo</em>ls Day on the Internet.",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "author": {
+                              "value": "hoodoof",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "story_text": {
+                              "value": "I have a sense of humor.  Really I do.<p>I just don't find being pounded with systematic absurdity for an entire day every year as being very funny.<p>I don't know how to solve it.  It seems every single company and publication that communicates via the web has a corporate communications department or something that thinks it's a corporate priority to come out with something for April <em>Foo</em>ls. The Internet systematizes, amplifies, focuses, fully resources, funds, schedules, plans and implements high production value <em>foo</em>lery.  Corporate drone: &quot;Larry, Sergey, have you signed off yet on this years $4M April <em>Foo</em>ls budget? How are we going to attract and recruit the best engineers unless we've got a reputation for the very best and most <em>foo</em>lish April <em>Foo</em>ls trickery?&quot; Ugh.<p>It's just kind of silly and boring and makes we wish April 2 would come as soon as possible. As I read the Internet on April 1 I just try to self filter out all the silly unbelievable garbage. Most news sites (including HN) are hardly worth reading April 1.<p>You know when someone who thinks they are funny insists on telling lame jokes, and the audience feels an obligation to give an acknowledging guffaw? It's like an whole Internet day worth of that.<p>I feel like the Grinch Who Stole April <em>Foo</em>ls but really it has to be said.  If you've got it in mind to do some fine ol' <em>foo</em>lin then maybe the classy thing to do is leave the <em>foo</em>lin to others and spare us one more depressingly lame absurdity.",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2016-07-11T04:58:13.000Z",
+                          "title": "How we're scammed into eating phony food",
+                          "url": "http://nypost.com/2016/07/10/the-truth-behind-how-were-scammed-into-eating-phony-food/",
+                          "author": "apsec112",
+                          "points": 439,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 458,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1468213093,
+                          "relevancy_score": 6842,
+                          "_tags": [
+                            "story",
+                            "author_apsec112",
+                            "story_12068983"
+                          ],
+                          "objectID": "12068983",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "How we're scammed into eating phony <em>foo</em>d",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "http://nypost.com/2016/07/10/the-truth-behind-how-were-scammed-into-eating-phony-<em>foo</em>d/",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "apsec112",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2011-03-09T14:56:05.000Z",
+                          "title": "Sleep is more important than food",
+                          "url": "http://blogs.hbr.org/schwartz/2011/03/sleep-is-more-important-than-f.html",
+                          "author": "panarky",
+                          "points": 437,
+                          "story_text": "",
+                          "comment_text": null,
+                          "num_comments": 169,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1299682565,
+                          "relevancy_score": 3092,
+                          "_tags": [
+                            "story",
+                            "author_panarky",
+                            "story_2305001"
+                          ],
+                          "objectID": "2305001",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Sleep is more important than <em>foo</em>d",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "http://blogs.hbr.org/schwartz/2011/03/sleep-is-more-important-than-f.html",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "author": {
+                              "value": "panarky",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "story_text": {
+                              "value": "",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2017-08-31T16:35:00.000Z",
+                          "title": "ESPN Football Analyst Walks Away, Disturbed by Brain Trauma on Field",
+                          "url": "https://www.nytimes.com/2017/08/30/sports/espn-ed-cunningham-football-concussions.html",
+                          "author": "daegloe",
+                          "points": 436,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 383,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1504197300,
+                          "relevancy_score": 7635,
+                          "_tags": [
+                            "story",
+                            "author_daegloe",
+                            "story_15141495"
+                          ],
+                          "objectID": "15141495",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "ESPN <em>Foo</em>tball Analyst Walks Away, Disturbed by Brain Trauma on Field",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://www.nytimes.com/2017/08/30/sports/espn-ed-cunningham-<em>foo</em>tball-concussions.html",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "daegloe",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2018-09-06T21:43:25.000Z",
+                          "title": "Whole Foods workers seek to unionize",
+                          "url": "https://techcrunch.com/2018/09/06/whole-foods-workers-seek-to-unionize-says-amazon-is-exploiting-our-dedication/",
+                          "author": "deegles",
+                          "points": 433,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 391,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1536270205,
+                          "relevancy_score": 8347,
+                          "_tags": [
+                            "story",
+                            "author_deegles",
+                            "story_17929840"
+                          ],
+                          "objectID": "17929840",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Whole <em>Foo</em>ds workers seek to unionize",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://techcrunch.com/2018/09/06/whole-<em>foo</em>ds-workers-seek-to-unionize-says-amazon-is-exploiting-our-dedication/",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "deegles",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2016-04-18T16:26:44.000Z",
+                          "title": "Thermal camera footage allegedly shows pro cyclists using motors",
+                          "url": "http://fittish.deadspin.com/secret-thermal-camera-footage-allegedly-shows-seven-pro-1771492666",
+                          "author": "phreeza",
+                          "points": 432,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 298,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1460996804,
+                          "relevancy_score": 6681,
+                          "_tags": [
+                            "story",
+                            "author_phreeza",
+                            "story_11521113"
+                          ],
+                          "objectID": "11521113",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Thermal camera <em>foo</em>tage allegedly shows pro cyclists using motors",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "http://fittish.deadspin.com/secret-thermal-camera-<em>foo</em>tage-allegedly-shows-seven-pro-1771492666",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "phreeza",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2017-04-04T14:51:41.000Z",
+                          "title": "Reddit’s April Fools’ experiment",
+                          "url": "https://arstechnica.com/gaming/2017/04/in-memoriam-reddits-72-hour-live-graffiti-wall-as-a-social-experiment/",
+                          "author": "camtarn",
+                          "points": 430,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 275,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1491317501,
+                          "relevancy_score": 7353,
+                          "_tags": [
+                            "story",
+                            "author_camtarn",
+                            "story_14033216"
+                          ],
+                          "objectID": "14033216",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Reddit’s April <em>Foo</em>ls’ experiment",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://arstechnica.com/gaming/2017/04/in-memoriam-reddits-72-hour-live-graffiti-wall-as-a-social-experiment/",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "author": {
+                              "value": "camtarn",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2011-02-04T21:30:58.000Z",
+                          "title": "Aerial footage of uncontacted Amazon tribe",
+                          "url": "http://www.uncontactedtribes.org/brazilfootage",
+                          "author": "timf",
+                          "points": 418,
+                          "story_text": "",
+                          "comment_text": null,
+                          "num_comments": 363,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1296855058,
+                          "relevancy_score": 3025,
+                          "_tags": [
+                            "story",
+                            "author_timf",
+                            "story_2181315"
+                          ],
+                          "objectID": "2181315",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Aerial <em>foo</em>tage of uncontacted Amazon tribe",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "http://www.uncontactedtribes.org/brazilfootage",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "author": {
+                              "value": "timf",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            },
+                            "story_text": {
+                              "value": "",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        },
+                        {
+                          "created_at": "2017-02-17T16:18:16.000Z",
+                          "title": "Dole Food Had Too Many Shares",
+                          "url": "https://www.bloomberg.com/view/articles/2017-02-17/dole-food-had-too-many-shares",
+                          "author": "ot",
+                          "points": 418,
+                          "story_text": null,
+                          "comment_text": null,
+                          "num_comments": 170,
+                          "story_id": null,
+                          "story_title": null,
+                          "story_url": null,
+                          "parent_id": null,
+                          "created_at_i": 1487348296,
+                          "relevancy_score": 7259,
+                          "_tags": [
+                            "story",
+                            "author_ot",
+                            "story_13669315"
+                          ],
+                          "objectID": "13669315",
+                          "_highlightResult": {
+                            "title": {
+                              "value": "Dole <em>Foo</em>d Had Too Many Shares",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "url": {
+                              "value": "https://www.bloomberg.com/view/articles/2017-02-17/dole-<em>foo</em>d-had-too-many-shares",
+                              "matchLevel": "full",
+                              "fullyHighlighted": false,
+                              "matchedWords": [
+                                "foo"
+                              ]
+                            },
+                            "author": {
+                              "value": "ot",
+                              "matchLevel": "none",
+                              "matchedWords": []
+                            }
+                          }
+                        }
+                      ],
+                      "nbHits": 35759,
+                      "page": 0,
+                      "nbPages": 50,
+                      "hitsPerPage": 20,
+                      "exhaustiveNbHits": true,
+                      "query": "foo",
+                      "params": "advancedSyntax=true&analytics=true&analyticsTags=backend&query=foo&tags=%28story%2Cjob%2Cpoll%29",
+                      "processingTimeMS": 20
+                    }
+                    """#
+                    .data(using: .utf8)!
+                completionHandler(.success((jsonData, HTTPURLResponse())))
             } else if endpoint.url?.absoluteString == "https://hn.algolia.com/api/v1/items/1" {
                 let jsonData = #"""
                     {
@@ -615,7 +1535,7 @@ final class APIClientTests: XCTestCase {
         return client
     }()
 
-    func testLoadingTopItems() {
+    func testLoadingItems() {
         client.items(ids: [1]) { result in
             guard case let .success(items) = result else {
                 XCTFail("Error \(result.failure!) thrown.")
@@ -624,6 +1544,18 @@ final class APIClientTests: XCTestCase {
             let item = items[0]
             XCTAssertEqual(item.story?.title, "Y Combinator")
             XCTAssertEqual(item.story?.author, "pg")
+        }
+    }
+
+    func testSearchingItems() {
+        client.items(query: "foo") { result in
+            guard case let .success(items) = result else {
+                XCTFail("Error \(result.failure!) thrown.")
+                return
+            }
+            let item = items[0]
+            XCTAssertEqual(item.story?.title, "Amazon to Acquire Whole Foods for $13.7B")
+            XCTAssertEqual(item.story?.author, "whatok")
         }
     }
 

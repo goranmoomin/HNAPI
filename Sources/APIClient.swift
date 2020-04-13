@@ -59,6 +59,21 @@ class APIClient {
         }
     }
 
+    func items(query: String, completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void)
+    {
+        networkClient.request(to: .algolia(query: query)) { result in
+            guard case let .success((data, _)) = result else {
+                completionHandler(.failure(result.failure!))
+                return
+            }
+            let itemsResult = Result<[TopLevelItem], Error> {
+                let queryResult = try self.decoder.decode(QueryResult.self, from: data)
+                return queryResult.hits
+            }
+            completionHandler(itemsResult)
+        }
+    }
+
     func items(
         category: Category = .top, count: Int = 30,
         completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
