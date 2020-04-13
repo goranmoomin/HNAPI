@@ -70,4 +70,37 @@ final class APIClientIntegrationTests: XCTestCase {
         }
         waitForExpectations(timeout: .infinity, handler: nil)
     }
+
+    func testCommenting() {
+        let client = APIClient()
+        let expectation = self.expectation(description: "Expect for commenting to succeed")
+        client.login(userName: "hntestacc", password: "hntestpwd") { result in
+            guard case let .success(token) = result else {
+                XCTFail("Error \(result.failure!) thrown.")
+                expectation.fulfill()
+                return
+            }
+            client.topItems { result in
+                guard case let .success(topItems) = result else {
+                    XCTFail("Error \(result.failure!) thrown.")
+                    expectation.fulfill()
+                    return
+                }
+                let item = topItems[0]
+                let id = item.id
+                client.reply(
+                    toID: id, text: "This is a test. If you see this, please pass through.",
+                    token: token
+                ) { result in
+                    guard case .success = result else {
+                        XCTFail("Error \(result.failure!) thrown.")
+                        expectation.fulfill()
+                        return
+                    }
+                    expectation.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: .infinity, handler: nil)
+    }
 }

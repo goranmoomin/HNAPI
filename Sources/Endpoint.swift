@@ -63,4 +63,22 @@ extension Endpoint {
         let url = components.url(relativeTo: hnBase)!
         return Endpoint(url: url)
     }
+
+    static func hn(
+        replyToID id: Int, token: Token, hmac: String? = nil, text: String? = nil
+    ) -> Endpoint {
+        var components = URLComponents()
+        components.path += "comment"
+        components.queryItems = [URLQueryItem(name: "parent", value: "\(id)")]
+        if let hmac = hmac {
+            components.queryItems?.append(URLQueryItem(name: "hmac", value: hmac))
+        }
+        if let text = text {
+            components.queryItems?.append(URLQueryItem(name: "text", value: text))
+        }
+        let url = components.url(relativeTo: hnBase)!
+        var endpoint = Endpoint(url: url)
+        endpoint.add(token)
+        return endpoint
+    }
 }

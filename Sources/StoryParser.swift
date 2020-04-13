@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSoup
 
-class HNParser {
+class StoryParser {
     // MARK: - Properties
 
     var document: Document

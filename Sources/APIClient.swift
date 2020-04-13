@@ -3,7 +3,10 @@ import Foundation
 class APIClient {
     // MARK: - Error
 
-    enum APIError: Error { case loginFailed }
+    enum APIError: Error {
+        case loginFailed
+        case unknown
+    }
 
     // MARK: - Properties
 
@@ -95,7 +98,7 @@ class APIClient {
                     }
                     let html = String(data: data, encoding: .utf8)!
                     do {
-                        let parser = try HNParser(html: html)
+                        let parser = try StoryParser(html: html)
                         comments = parser.sortedCommentTree(original: comments)
                         let actions = parser.actions()
                         let page = Page(item: item, children: comments, actions: actions)
@@ -125,6 +128,37 @@ class APIClient {
             if let token = cookies.first(where: { $0.name == "user" }) {
                 completionHandler(.success(token))
             } else { completionHandler(.failure(APIError.loginFailed)) }
+        }
+    }
+
+    // MARK: - Commenting
+
+    func reply(
+        toID id: Int, text: String, token: Token,
+        completionHandler: @escaping (Result<Void, Error>) -> Void
+    ) {
+        networkClient.request(to: .hn(replyToID: id, token: token)) { result in
+            guard case let .success((data, _)) = result else {
+                completionHandler(.failure(result.failure!))
+                return
+            }
+            let html = String(data: data, encoding: .utf8)!
+            do {
+                let parser = try CommentConfirmationParser(html: html)
+                guard let hmac = parser.hmac() else {
+                    completionHandler(.failure(APIError.unknown))
+                    return
+                }
+                self.networkClient.request(
+                    to: .hn(replyToID: id, token: token, hmac: hmac, text: text)
+                ) { result in
+                    guard case .success = result else {
+                        completionHandler(.failure(result.failure!))
+                        return
+                    }
+                    completionHandler(.success(()))
+                }
+            } catch { completionHandler(.failure(error)) }
         }
     }
 }
