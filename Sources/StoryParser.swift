@@ -60,12 +60,12 @@ class StoryParser {
             let voteLinkEls = self.voteLinkEls(id: id)
             for voteLinkEl in voteLinkEls {
                 let href = try! voteLinkEl.attr("href")
-                guard let url = URL(string: href, relativeTo: base),
-                    let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-                else { continue }
+                guard var components = URLComponents(string: href) else { continue }
                 if components.queryItems?.contains(where: { $0.name == "auth" }) == false {
                     continue
                 }
+                components.queryItems?.removeAll(where: { $0.name == "goto" })
+                guard let url = components.url(relativeTo: base) else { continue }
                 // FIXME: Error handling
                 let voteArrowEl = try! voteLinkEl.select(".votearrow").array()[0]
                 let title = try! voteArrowEl.attr("title")

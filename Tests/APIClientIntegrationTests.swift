@@ -117,4 +117,53 @@ final class APIClientIntegrationTests: XCTestCase {
         }
         waitForExpectations(timeout: .infinity, handler: nil)
     }
+
+    func testUpvoting() {
+        let client = APIClient()
+        let expectation = self.expectation(description: "Expect the upvote to succeed")
+        client.login(userName: "hntestacc", password: "hntestpwd") { result in
+            guard case let .success(token) = result else {
+                XCTFail("Error \(result.failure!) thrown.")
+                expectation.fulfill()
+                return
+            }
+            client.topItems { result in
+                guard case let .success(topItems) = result else {
+                    XCTFail("Error \(result.failure!) thrown.")
+                    expectation.fulfill()
+                    return
+                }
+                let item = topItems[0]
+                client.page(item: item, token: token) { result in
+                    guard case let .success(page) = result else {
+                        XCTFail("Error \(result.failure!) thrown.")
+                        expectation.fulfill()
+                        return
+                    }
+                    let id = page.children[0].id
+                    guard
+                        let action = page.actions[id]?
+                            .first(where: {
+                                if case .upvote = $0 { return true } else { return false }
+                            })
+                    else {
+                        XCTFail("Upvote action not found.")
+                        expectation.fulfill()
+                        return
+                    }
+                    client.execute(action: action, token: token, page: page) { result in
+                        print("client.execute(action:page:completionHandler:)")
+                        guard case .success = result else {
+                            XCTFail("Error \(result.failure!) thrown.")
+                            expectation.fulfill()
+                            return
+                        }
+                        expectation.fulfill()
+                    }
+                    expectation.fulfill()
+                }
+            }
+        }
+        waitForExpectations(timeout: .infinity, handler: nil)
+    }
 }

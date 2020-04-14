@@ -5,6 +5,7 @@ class APIClient {
 
     enum APIError: Error {
         case loginFailed
+        case actionNotValid
         case unknown
     }
 
@@ -126,6 +127,25 @@ class APIClient {
                     } catch { completionHandler(.failure(error)) }
                 }
             } catch { completionHandler(.failure(error)) }
+        }
+    }
+
+    func execute(
+        action: Action, token: Token, page: Page? = nil,
+        completionHandler: @escaping (Result<Void, Error>) -> Void
+    ) {
+        networkClient.request(to: Endpoint(url: action.url, token: token)) { result in
+            guard case .success = result else {
+                completionHandler(.failure(result.failure!))
+                return
+            }
+            if let (id, actionSet) = page?.actions.first(where: { $0.value.contains(action) }) {
+                var newActionSet = actionSet
+                newActionSet.remove(action)
+                newActionSet.insert(action.inverse)
+                page?.actions[id] = newActionSet
+            }
+            completionHandler(.success(()))
         }
     }
 
