@@ -1,6 +1,6 @@
 import Foundation
 
-enum Category: String {
+public enum Category: String {
     case top = "topstories"
     case new = "newstories"
     case best = "beststories"

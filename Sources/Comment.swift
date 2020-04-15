@@ -1,7 +1,7 @@
 import Foundation
 
-class Comment: Decodable {
-    enum Color: String, CaseIterable {
+public class Comment: Decodable {
+    public enum Color: String, CaseIterable {
         case c00
         case c5a
         case c73
@@ -16,12 +16,12 @@ class Comment: Decodable {
 
     // MARK: - Properties
 
-    var id: Int
-    var creation: Date
-    var author: String
-    var text: String
-    var color: Color = .c00
-    var children: [Comment]
+    public var id: Int
+    public var creation: Date
+    public var author: String
+    public var text: String
+    public var color: Color = .c00
+    public var children: [Comment]
 
     // MARK: - Decodable
 
@@ -33,7 +33,7 @@ class Comment: Decodable {
         case children
     }
 
-    required init(
+    required public init(
         from decoder: Decoder
     ) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

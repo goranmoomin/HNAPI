@@ -1,11 +1,11 @@
 import Foundation
 
-class Page {
+public class Page {
     // MARK: - Properties
 
-    var topLevelItem: TopLevelItem
-    var children: [Comment]
-    var actions: [Int: Set<Action>]
+    public var topLevelItem: TopLevelItem
+    public var children: [Comment]
+    public var actions: [Int: Set<Action>]
 
     // MARK: - Init
 

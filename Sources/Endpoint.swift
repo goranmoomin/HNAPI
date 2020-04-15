@@ -9,7 +9,9 @@ extension Endpoint {
     static var firebaseBase = URL(string: "https://hacker-news.firebaseio.com/v0/")!
     static var hnBase = URL(string: "https://news.ycombinator.com/")!
 
-    init(url: URL, token: Token) {
+    init(
+        url: URL, token: Token
+    ) {
         var endpoint = Endpoint(url: url)
         endpoint.add(token)
         self = endpoint

@@ -1,6 +1,6 @@
 import Foundation
 
-enum TopLevelItem {
+public enum TopLevelItem {
     case story(Story)
     case job(Job)
 
@@ -35,7 +35,7 @@ extension TopLevelItem: Decodable {
 
     enum CodingKeys: String, CodingKey { case tags = "_tags" }
 
-    init(
+    public init(
         from decoder: Decoder
     ) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

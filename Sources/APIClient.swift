@@ -1,9 +1,9 @@
 import Foundation
 
-class APIClient {
+public class APIClient {
     // MARK: - Error
 
-    enum APIError: Error {
+    public enum APIError: Error {
         case loginFailed
         case actionNotValid
         case unknown
@@ -37,11 +37,17 @@ class APIClient {
         return decoder
     }()
 
+    // MARK: - Init
+
+    public init() {}
+
     // MARK: - Top Level Items
 
     struct QueryResult: Decodable { var hits: [TopLevelItem] }
 
-    func items(ids: [Int], completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void) {
+    public func items(
+        ids: [Int], completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
+    ) {
         networkClient.request(to: .algolia(ids: ids)) { result in
             guard case let .success((data, _)) = result else {
                 completionHandler(.failure(result.failure!))
@@ -60,8 +66,9 @@ class APIClient {
         }
     }
 
-    func items(query: String, completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void)
-    {
+    public func items(
+        query: String, completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
+    ) {
         networkClient.request(to: .algolia(query: query)) { result in
             guard case let .success((data, _)) = result else {
                 completionHandler(.failure(result.failure!))
@@ -75,7 +82,7 @@ class APIClient {
         }
     }
 
-    func items(
+    public func items(
         category: Category = .top, count: Int = 30,
         completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
     ) {
@@ -91,7 +98,7 @@ class APIClient {
         }
     }
 
-    func topItems(
+    public func topItems(
         count: Int = 30, completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
     ) { items(category: .top, count: count, completionHandler: completionHandler) }
 
@@ -99,7 +106,7 @@ class APIClient {
 
     struct AlgoliaItem: Decodable { var children: [Comment] }
 
-    func page(
+    public func page(
         item: TopLevelItem, token: Token? = nil,
         completionHandler: @escaping (Result<Page, Error>) -> Void
     ) {
@@ -130,7 +137,7 @@ class APIClient {
         }
     }
 
-    func execute(
+    public func execute(
         action: Action, token: Token, page: Page? = nil,
         completionHandler: @escaping (Result<Void, Error>) -> Void
     ) {
@@ -151,7 +158,7 @@ class APIClient {
 
     // MARK: - Authentication
 
-    func login(
+    public func login(
         userName: String, password: String,
         completionHandler: @escaping (Result<Token, Error>) -> Void
     ) {
@@ -173,7 +180,7 @@ class APIClient {
 
     // MARK: - Commenting
 
-    func reply(
+    public func reply(
         toID id: Int, text: String, token: Token,
         completionHandler: @escaping (Result<Void, Error>) -> Void
     ) {

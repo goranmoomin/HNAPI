@@ -1,16 +1,16 @@
 import Foundation
 
-class Job: Decodable {
+public class Job: Decodable {
     // MARK: - Error
 
     enum Error: Swift.Error { case decodingFailed }
 
     // MARK: - Properties
 
-    var id: Int
-    var title: String
-    var creation: Date
-    var content: Content
+    public var id: Int
+    public var title: String
+    public var creation: Date
+    public var content: Content
 
     // MARK: - Decodable
 
@@ -22,7 +22,7 @@ class Job: Decodable {
         case text = "story_text"
     }
 
-    required init(
+    required public init(
         from decoder: Decoder
     ) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

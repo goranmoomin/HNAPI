@@ -1,6 +1,6 @@
 import Foundation
 
-typealias Token = HTTPCookie
+public typealias Token = HTTPCookie
 
 extension URLRequest {
     mutating func add(_ token: Token) {

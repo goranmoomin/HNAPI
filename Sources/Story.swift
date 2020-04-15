@@ -1,19 +1,19 @@
 import Foundation
 
-class Story: Decodable {
+public class Story: Decodable {
     // MARK: - Error
 
     enum Error: Swift.Error { case decodingFailed }
 
     // MARK: - Properties
 
-    var id: Int
-    var title: String
-    var creation: Date
-    var content: Content
-    var author: String
-    var points: Int
-    var commentCount: Int
+    public var id: Int
+    public var title: String
+    public var creation: Date
+    public var content: Content
+    public var author: String
+    public var points: Int
+    public var commentCount: Int
 
     // MARK: - Decodable
 
@@ -28,7 +28,7 @@ class Story: Decodable {
         case commentCount = "num_comments"
     }
 
-    required init(
+    required public init(
         from decoder: Decoder
     ) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
