@@ -22,6 +22,7 @@ public class Comment: Decodable {
     public var text: String
     public var color: Color = .c00
     public var children: [Comment]
+    public var commentCount: Int { children.reduce(1, { $0 + $1.commentCount }) }
 
     // MARK: - Decodable
 
