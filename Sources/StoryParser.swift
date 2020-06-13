@@ -6,6 +6,8 @@ class StoryParser {
 
     var document: Document
 
+    lazy var aThingEls: Elements = try! document.select(".athing.comtr")
+
     // MARK: - Init
 
     init(html: String) throws { document = try Parser.parse(html, "https://news.ycombinator.com/") }
@@ -13,14 +15,13 @@ class StoryParser {
     // MARK: - Methods
 
     func ids() -> [Int] {
-        let aThingEls = try! document.select(".athing.comtr")
         let ids = aThingEls.compactMap { Int($0.id()) }
         return ids
     }
 
     func aThingEl(id: Int) -> Element {
         // FIXME: Error handling
-        let aThingEl = try! document.select(".athing.comtr#\(id)").array()[0]
+        let aThingEl = try! aThingEls.select("#\(id)").array()[0]
         return aThingEl
     }
 
