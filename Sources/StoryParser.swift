@@ -7,6 +7,7 @@ class StoryParser {
     var document: Document
 
     lazy var aThingEls: Elements = try! document.select(".athing.comtr")
+    var aThingElCache: [Int: Element] = [:]
 
     // MARK: - Init
 
@@ -21,7 +22,13 @@ class StoryParser {
 
     func aThingEl(id: Int) -> Element {
         // FIXME: Error handling
-        let aThingEl = try! aThingEls.select("#\(id)").array()[0]
+        let aThingEl: Element
+        if aThingElCache[id] != nil {
+            aThingEl = aThingElCache[id]!
+        } else {
+            aThingEl = try! aThingEls.select("#\(id)").array()[0]
+            aThingElCache[id] = aThingEl
+        }
         return aThingEl
     }
 
