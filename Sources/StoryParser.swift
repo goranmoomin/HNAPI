@@ -7,7 +7,7 @@ class StoryParser {
     var document: Document
 
     lazy var aThingEls: Elements = try! document.select(".athing.comtr")
-    var aThingElCache: [Int: Element] = [:]
+    lazy var ids: [Int] = aThingEls.compactMap { Int($0.id()) }
 
     // MARK: - Init
 
@@ -15,20 +15,9 @@ class StoryParser {
 
     // MARK: - Methods
 
-    func ids() -> [Int] {
-        let ids = aThingEls.compactMap { Int($0.id()) }
-        return ids
-    }
-
     func aThingEl(id: Int) -> Element {
         // FIXME: Error handling
-        let aThingEl: Element
-        if aThingElCache[id] != nil {
-            aThingEl = aThingElCache[id]!
-        } else {
-            aThingEl = try! aThingEls.select("#\(id)").array()[0]
-            aThingElCache[id] = aThingEl
-        }
+        let aThingEl = try! aThingEls.select("#\(id)").array()[0]
         return aThingEl
     }
 
@@ -41,7 +30,7 @@ class StoryParser {
 
     func commentColors() -> [Int: Comment.Color] {
         var commentColors: [Int: Comment.Color] = [:]
-        for id in ids() {
+        for id in ids {
             let commTextEl = self.commTextEl(id: id)
             for color in Comment.Color.allCases {
                 if commTextEl.hasClass(color.rawValue) {
@@ -63,7 +52,7 @@ class StoryParser {
         var actions: [Int: Set<Action>] = [:]
         let base = URL(string: "https://news.ycombinator.com")!
         // TODO: Add getting story action
-        for id in ids() {
+        for id in ids {
             var actionSet: Set<Action> = []
             let voteLinkEls = self.voteLinkEls(id: id)
             for voteLinkEl in voteLinkEls {
@@ -88,9 +77,8 @@ class StoryParser {
         return actions
     }
 
-    func sortedCommentTree(original: [Comment]) -> [Comment] {
-        let ids = self.ids()
-        let commentColors = self.commentColors()
+    func sortedCommentTree(original: [Comment], colors: [Int: Comment.Color]? = nil) -> [Comment] {
+        let colors = colors ?? self.commentColors()
         let sortedTree = original.sorted { left, right in
             guard let leftIndex = ids.firstIndex(of: left.id) else { return false }
             guard let rightIndex = ids.firstIndex(of: right.id) else { return true }
@@ -98,8 +86,8 @@ class StoryParser {
         }
         for comment in sortedTree {
             // TODO: Decide whether color should be given for ones that aren't found. cdd, perhaps.
-            if let color = commentColors[comment.id] { comment.color = color }
-            comment.children = sortedCommentTree(original: comment.children)
+            if let color = colors[comment.id] { comment.color = color }
+            comment.children = sortedCommentTree(original: comment.children, colors: colors)
         }
         return sortedTree
     }
