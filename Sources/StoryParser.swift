@@ -17,8 +17,7 @@ class StoryParser {
 
     func aThingEl(id: Int) -> Element {
         // FIXME: Error handling
-        let aThingEl = try! aThingEls.select("#\(id)").array()[0]
-        return aThingEl
+        return aThingEls.first(where: { $0.id() == "\(id)" })!
     }
 
     func commTextEl(id: Int) -> Element {
