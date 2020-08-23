@@ -47,6 +47,12 @@ class StoryParser {
         return voteLinkEls
     }
 
+    func unvoteLinkEl(id: Int) -> Element? {
+        let aThingEl = self.aThingEl(id: id)
+        let unvoteLinkEl = try! aThingEl.select(".comhead [id^=unv] > a").first()
+        return unvoteLinkEl
+    }
+
     func actions() -> [Int: Set<Action>] {
         var actions: [Int: Set<Action>] = [:]
         let base = URL(string: "https://news.ycombinator.com")!
@@ -71,7 +77,18 @@ class StoryParser {
                 default: break
                 }
             }
-            actions[id] = actionSet  // TODO: Add getting unvoting action
+            if let unvoteLinkEl = self.unvoteLinkEl(id: id) {
+                let href = try! unvoteLinkEl.attr("href")
+                if let url = URL(string: href) {
+                    let text = try! unvoteLinkEl.text()
+                    switch text {
+                    case "unvote": actionSet.insert(.unvote(url))
+                    case "undown": actionSet.insert(.undown(url))
+                    default: break
+                    }
+                }
+            }
+            actions[id] = actionSet
         }
         return actions
     }
