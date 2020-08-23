@@ -79,7 +79,7 @@ class StoryParser {
             }
             if let unvoteLinkEl = self.unvoteLinkEl(id: id) {
                 let href = try! unvoteLinkEl.attr("href")
-                if let url = URL(string: href) {
+                if let url = URL(string: href, relativeTo: base) {
                     let text = try! unvoteLinkEl.text()
                     switch text {
                     case "unvote": actionSet.insert(.unvote(url))
