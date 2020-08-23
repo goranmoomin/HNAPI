@@ -1,4 +1,5 @@
 import Foundation
+import SwiftSoup
 
 public class Comment: Decodable {
     public enum Color: String, CaseIterable {
@@ -41,7 +42,7 @@ public class Comment: Decodable {
         id = try container.decode(Int.self, forKey: .id)
         creation = try container.decode(Date.self, forKey: .creation)
         do {
-            text = try container.decode(String.self, forKey: .text)
+            text = try Entities.unescape(container.decode(String.self, forKey: .text))
             author = try container.decode(String.self, forKey: .author)
         } catch {
             // FIXME: Remove workaround of deleted comments
