@@ -104,7 +104,18 @@ public class APIClient {
 
     // MARK: - Page
 
-    struct AlgoliaItem: Decodable { var children: [Comment] }
+    struct AlgoliaItem: Decodable {
+        var children: [Comment]
+
+        enum CodingKeys: CodingKey {
+            case children
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            children = try container.decode([Comment].self, forKey: .children).filter { !$0.isDeleted }
+        }
+    }
 
     public func page(
         item: TopLevelItem, token: Token? = nil,

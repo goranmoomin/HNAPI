@@ -21,6 +21,7 @@ public class Comment: Decodable {
     public var creation: Date
     public var author: String
     public var text: String
+    var isDeleted: Bool
     public var color: Color = .c00
     public var children: [Comment]
     public var commentCount: Int { children.reduce(1, { $0 + $1.commentCount }) }
@@ -44,11 +45,12 @@ public class Comment: Decodable {
         do {
             text = try Entities.unescape(container.decode(String.self, forKey: .text))
             author = try container.decode(String.self, forKey: .author)
+            isDeleted = false
         } catch {
-            // FIXME: Remove workaround of deleted comments
             text = ""
             author = ""
+            isDeleted = true
         }
-        children = try container.decode([Comment].self, forKey: .children)
+        children = try container.decode([Comment].self, forKey: .children).filter { !$0.isDeleted }
     }
 }
