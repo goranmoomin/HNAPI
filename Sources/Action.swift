@@ -24,7 +24,7 @@ public enum Action: Equatable, Hashable { case favorite(URL)
 }
 
 extension Action {
-    var inverse: Action {
+    var inverseSet: Set<Action> {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         if components?.queryItems == nil { components?.queryItems = [] }
         components?.queryItems?.removeAll(where: { $0.name == "how" })
@@ -33,20 +33,36 @@ extension Action {
         case .favorite, .flag: components?.queryItems?.append(URLQueryItem(name: "un", value: "t"))
         case .upvote, .downvote:
             components?.queryItems?.append(URLQueryItem(name: "how", value: "un"))
-        case .unvote: components?.queryItems?.append(URLQueryItem(name: "how", value: "up"))
-        case .undown: components?.queryItems?.append(URLQueryItem(name: "how", value: "down"))
-        case .unfavorite, .unflag: break
+        case .unvote, .undown, .unfavorite, .unflag: break
         }
-        let url = components!.url!
+
         switch self {
-        case .favorite: return .unfavorite(url)
-        case .unfavorite: return .favorite(url)
-        case .upvote: return .unvote(url)
-        case .unvote: return .upvote(url)
-        case .downvote: return .undown(url)
-        case .undown: return .downvote(url)
-        case .flag: return .unflag(url)
-        case .unflag: return .flag(url)
+        case .favorite:
+            let url = components!.url!
+            return [.unfavorite(url)]
+        case .unfavorite:
+            let url = components!.url!
+            return [.favorite(url)]
+        case .upvote:
+            let url = components!.url!
+            return [.unvote(url)]
+        case .downvote:
+            let url = components!.url!
+            return [.undown(url)]
+        case .unvote, .undown:
+            var upvoteComponents = components
+            upvoteComponents?.queryItems?.append(URLQueryItem(name: "how", value: "up"))
+            var downvoteComponents = components
+            downvoteComponents?.queryItems?.append(URLQueryItem(name: "how", value: "down"))
+            let upvoteURL = upvoteComponents!.url!
+            let downvoteURL = downvoteComponents!.url!
+            return [.upvote(upvoteURL), .downvote(downvoteURL)]
+        case .flag:
+            let url = components!.url!
+            return [.unflag(url)]
+        case .unflag:
+            let url = components!.url!
+            return [.flag(url)]
         }
     }
 }

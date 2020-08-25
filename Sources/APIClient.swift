@@ -160,7 +160,22 @@ public class APIClient {
             if let (id, actionSet) = page?.actions.first(where: { $0.value.contains(action) }) {
                 var newActionSet = actionSet
                 newActionSet.remove(action)
-                newActionSet.insert(action.inverse)
+                // FIXME: This should be encapsulated properly
+                switch action {
+                case .upvote, .downvote:
+                    for action in actionSet {
+                        switch action {
+                        case .upvote, .downvote:
+                            newActionSet.remove(action)
+                        default: break
+                        }
+                    }
+                default: break
+                }
+                newActionSet.remove(action)
+                for inverseAction in action.inverseSet {
+                    newActionSet.insert(inverseAction)
+                }
                 page?.actions[id] = newActionSet
             }
             completionHandler(.success(()))
