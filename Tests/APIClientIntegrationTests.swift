@@ -140,7 +140,7 @@ final class APIClientIntegrationTests: XCTestCase {
                         expectation.fulfill()
                         return
                     }
-                    let id = page.children[0].id
+                    let id = item.id
                     guard
                         let action = page.actions[id]?
                             .first(where: {
@@ -160,7 +160,6 @@ final class APIClientIntegrationTests: XCTestCase {
                         }
                         expectation.fulfill()
                     }
-                    expectation.fulfill()
                 }
             }
         }
