@@ -6,8 +6,10 @@ class StoryParser {
 
     var document: Document
 
-    lazy var aThingEls: Elements = try! document.select(".athing.comtr")
+    lazy var fatItemEl: Element? = try! document.select(".fatitem").first()
+    lazy var aThingEls: Elements = try! document.select(".athing")
     lazy var ids: [Int] = aThingEls.compactMap { Int($0.id()) }
+    lazy var storyID: Int? = ids.first
 
     // MARK: - Init
 
@@ -48,15 +50,19 @@ class StoryParser {
     }
 
     func unvoteLinkEl(id: Int) -> Element? {
-        let aThingEl = self.aThingEl(id: id)
-        let unvoteLinkEl = try! aThingEl?.select(".comhead [id^=unv] > a").first()
+        let containerEl: Element?
+        if id == storyID {
+            containerEl = fatItemEl
+        } else {
+            containerEl = self.aThingEl(id: id)
+        }
+        let unvoteLinkEl = try! containerEl?.select("[id^=unv] > a").first()
         return unvoteLinkEl
     }
 
     func actions() -> [Int: Set<Action>] {
         var actions: [Int: Set<Action>] = [:]
         let base = URL(string: "https://news.ycombinator.com")!
-        // TODO: Add getting story action
         for id in ids {
             var actionSet: Set<Action> = []
             let voteLinkEls = self.voteLinkEls(id: id)
