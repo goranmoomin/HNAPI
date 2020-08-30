@@ -15,22 +15,22 @@ class StoryParser {
 
     // MARK: - Methods
 
-    func aThingEl(id: Int) -> Element {
-        // FIXME: Error handling
-        return aThingEls.first(where: { $0.id() == "\(id)" })!
+    func aThingEl(id: Int) -> Element? {
+        return aThingEls.first(where: { $0.id() == "\(id)" })
     }
 
-    func commTextEl(id: Int) -> Element {
+    func commTextEl(id: Int) -> Element? {
         let aThingEl = self.aThingEl(id: id)
-        // FIXME: Error handling
-        let commTextEl = try! aThingEl.select(".commtext").array()[0]
+        let commTextEl = try! aThingEl?.select(".commtext").array().first
         return commTextEl
     }
 
     func commentColors() -> [Int: Comment.Color] {
         var commentColors: [Int: Comment.Color] = [:]
         for id in ids {
-            let commTextEl = self.commTextEl(id: id)
+            guard let commTextEl = self.commTextEl(id: id) else {
+                continue
+            }
             for color in Comment.Color.allCases {
                 if commTextEl.hasClass(color.rawValue) {
                     commentColors[id] = color
@@ -43,13 +43,13 @@ class StoryParser {
 
     func voteLinkEls(id: Int) -> [Element] {
         let aThingEl = self.aThingEl(id: id)
-        let voteLinkEls = try! aThingEl.select(".votelinks a:has(.votearrow):not(.nosee)").array()
+        let voteLinkEls = try! aThingEl?.select(".votelinks a:has(.votearrow):not(.nosee)").array() ?? []
         return voteLinkEls
     }
 
     func unvoteLinkEl(id: Int) -> Element? {
         let aThingEl = self.aThingEl(id: id)
-        let unvoteLinkEl = try! aThingEl.select(".comhead [id^=unv] > a").first()
+        let unvoteLinkEl = try! aThingEl?.select(".comhead [id^=unv] > a").first()
         return unvoteLinkEl
     }
 
@@ -68,8 +68,9 @@ class StoryParser {
                 }
                 components.queryItems?.removeAll(where: { $0.name == "goto" })
                 guard let url = components.url(relativeTo: base) else { continue }
-                // FIXME: Error handling
-                let voteArrowEl = try! voteLinkEl.select(".votearrow").array()[0]
+                guard let voteArrowEl = try! voteLinkEl.select(".votearrow").array().first else {
+                    continue
+                }
                 let title = try! voteArrowEl.attr("title")
                 switch title {
                 case "upvote": actionSet.insert(.upvote(url))
