@@ -50,6 +50,7 @@ extension Action {
             let url = components!.url!
             return [.undown(url)]
         case .unvote, .undown:
+            // FIXME: Unvote's inverse might not include downvote
             var upvoteComponents = components
             upvoteComponents?.queryItems?.append(URLQueryItem(name: "how", value: "up"))
             var downvoteComponents = components
