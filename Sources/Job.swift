@@ -35,6 +35,10 @@ public class Job: Decodable {
             content = .url(url)
         } else if let text = try? container.decode(String.self, forKey: .text) {
             content = .text(text)
-        } else { throw Error.decodingFailed }
+        } else {
+            // FIXME: Don't hardcode this string
+            let url = URL(string: "https://news.ycombinator.com/item?id=\(id)")!
+            content = .url(url)
+        }
     }
 }

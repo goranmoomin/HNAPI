@@ -42,7 +42,11 @@ public class Story: Decodable {
             content = .url(url)
         } else if let text = try? Entities.unescape(container.decode(String.self, forKey: .text)) {
             content = .text(text)
-        } else { throw Error.decodingFailed }
+        } else {
+            // FIXME: Don't hardcode this string
+            let url = URL(string: "https://news.ycombinator.com/item?id=\(id)")!
+            content = .url(url)
+        }
         author = try container.decode(String.self, forKey: .author)
         points = try container.decode(Int.self, forKey: .points)
         commentCount = try container.decode(Int.self, forKey: .commentCount)
