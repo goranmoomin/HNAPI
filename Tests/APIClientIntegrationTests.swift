@@ -101,9 +101,8 @@ final class APIClientIntegrationTests: XCTestCase {
                     return
                 }
                 let item = topItems[0]
-                let id = item.id
                 client.reply(
-                    toID: id, text: "This is a test. If you see this, please pass through.",
+                    to: item, text: "This is a test. If you see this, please pass through.",
                     token: token
                 ) { result in
                     guard case .success = result else {

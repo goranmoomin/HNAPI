@@ -206,7 +206,15 @@ public class APIClient {
 
     // MARK: - Commenting
 
+    // TODO: Should be able to signal whether one can reply or not
     public func reply(
+        to commentable: Commentable, text: String, token: Token,
+        completionHandler: @escaping (Result<Void, Error>) -> Void
+    ) {
+        reply(toID: commentable.id, text: text, token: token, completionHandler: completionHandler)
+    }
+
+    func reply(
         toID id: Int, text: String, token: Token,
         completionHandler: @escaping (Result<Void, Error>) -> Void
     ) {
