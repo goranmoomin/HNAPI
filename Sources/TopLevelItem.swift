@@ -11,6 +11,11 @@ public enum TopLevelItem {
         }
     }
 
+    public var url: URL {
+        // FIXME: Don't hardcode this string
+        URL(string: "https://news.ycombinator.com/item?id=\(id)")!
+    }
+
     var story: Story? {
         switch self {
         case let .story(story): return story
