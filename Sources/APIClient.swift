@@ -153,6 +153,7 @@ public class APIClient {
                             item = .job(job)
                         case .story(let story):
                             story.title = algoliaItem.title
+                            story.points = algoliaItem.points
                             story.commentCount = algoliaItem.children.commentCount
                             item = .story(story)
                         }
