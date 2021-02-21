@@ -106,14 +106,20 @@ public class APIClient {
 
     struct AlgoliaItem: Decodable {
         var children: [Comment]
+        var title: String
+        var points: Int
 
         enum CodingKeys: CodingKey {
             case children
+            case title
+            case points
         }
 
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             children = try container.decode([Comment].self, forKey: .children).filter { !$0.isDeleted }
+            title = try container.decode(String.self, forKey: .title)
+            points = try container.decode(Int.self, forKey: .points)
         }
     }
 
@@ -140,6 +146,16 @@ public class APIClient {
                         let parser = try StoryParser(html: html)
                         comments = parser.sortedCommentTree(original: comments)
                         let actions = parser.actions()
+                        var item = item
+                        switch item {
+                        case .job(let job):
+                            job.title = algoliaItem.title
+                            item = .job(job)
+                        case .story(let story):
+                            story.title = algoliaItem.title
+                            story.commentCount = algoliaItem.children.commentCount
+                            item = .story(story)
+                        }
                         let page = Page(item: item, children: comments, actions: actions)
                         completionHandler(.success(page))
                     } catch { completionHandler(.failure(error)) }
