@@ -109,6 +109,10 @@ public class APIClient {
         var title: String
         var points: Int
 
+        var commentCount: Int {
+            children.reduce(0, { $0 + $1.commentCount })
+        }
+
         enum CodingKeys: CodingKey {
             case children
             case title
@@ -154,7 +158,7 @@ public class APIClient {
                         case .story(let story):
                             story.title = algoliaItem.title
                             story.points = algoliaItem.points
-                            story.commentCount = algoliaItem.children.commentCount
+                            story.commentCount = algoliaItem.commentCount
                             item = .story(story)
                         }
                         let page = Page(item: item, children: comments, actions: actions)

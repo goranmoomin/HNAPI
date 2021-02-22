@@ -54,9 +54,3 @@ public class Comment: Decodable {
         children = try container.decode([Comment].self, forKey: .children).filter { !$0.isDeleted }
     }
 }
-
-extension Array where Element == Comment {
-    var commentCount: Int {
-        reduce(1, { $0 + $1.commentCount })
-    }
-}
