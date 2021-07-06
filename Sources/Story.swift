@@ -29,9 +29,7 @@ public class Story: Decodable {
         case commentCount = "num_comments"
     }
 
-    required public init(
-        from decoder: Decoder
-    ) throws {
+    required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let objectID = try container.decode(String.self, forKey: .objectID)
         guard let id = Int(objectID) else { throw Error.decodingFailed }

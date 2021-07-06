@@ -1525,7 +1525,9 @@ final class APIClientTests: XCTestCase {
                     """#
                     .data(using: .utf8)!
                 completionHandler(.success((htmlData, HTTPURLResponse())))
-            } else { completionHandler(.failure(Error.unknown)) }
+            } else {
+                completionHandler(.failure(Error.unknown))
+            }
         }
     }
 

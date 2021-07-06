@@ -40,9 +40,7 @@ extension TopLevelItem: Decodable {
 
     enum CodingKeys: String, CodingKey { case tags = "_tags" }
 
-    public init(
-        from decoder: Decoder
-    ) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let tags = try container.decode([String].self, forKey: .tags)
         if tags.contains("story") {
@@ -51,6 +49,8 @@ extension TopLevelItem: Decodable {
         } else if tags.contains("job") {
             let job = try decoder.singleValueContainer().decode(Job.self)
             self = .job(job)
-        } else { throw Error.decodingFailed }
+        } else {
+            throw Error.decodingFailed
+        }
     }
 }

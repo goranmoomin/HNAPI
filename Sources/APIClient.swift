@@ -109,9 +109,7 @@ public class APIClient {
         var title: String
         var points: Int
 
-        var commentCount: Int {
-            children.reduce(0, { $0 + $1.commentCount })
-        }
+        var commentCount: Int { children.reduce(0, { $0 + $1.commentCount }) }
 
         enum CodingKeys: CodingKey {
             case children
@@ -121,7 +119,8 @@ public class APIClient {
 
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            children = try container.decode([Comment].self, forKey: .children).filter { !$0.isDeleted }
+            children = try container.decode([Comment].self, forKey: .children)
+                .filter { !$0.isDeleted }
             title = try container.decode(String.self, forKey: .title)
             points = try container.decode(Int.self, forKey: .points)
         }
@@ -186,17 +185,14 @@ public class APIClient {
                 case .upvote, .downvote:
                     for action in actionSet {
                         switch action {
-                        case .upvote, .downvote:
-                            newActionSet.remove(action)
+                        case .upvote, .downvote: newActionSet.remove(action)
                         default: break
                         }
                     }
                 default: break
                 }
                 newActionSet.remove(action)
-                for inverseAction in action.inverseSet {
-                    newActionSet.insert(inverseAction)
-                }
+                for inverseAction in action.inverseSet { newActionSet.insert(inverseAction) }
                 page?.actions[id] = newActionSet
             }
             completionHandler(.success(()))
@@ -221,7 +217,9 @@ public class APIClient {
             let cookies = HTTPCookie.cookies(withResponseHeaderFields: headerFields, for: base)
             if let token = cookies.first(where: { $0.name == "user" }) {
                 completionHandler(.success(token))
-            } else { completionHandler(.failure(APIError.loginFailed)) }
+            } else {
+                completionHandler(.failure(APIError.loginFailed))
+            }
         }
     }
 

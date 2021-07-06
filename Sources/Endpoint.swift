@@ -9,9 +9,7 @@ extension Endpoint {
     static var firebaseBase = URL(string: "https://hacker-news.firebaseio.com/v0/")!
     static var hnBase = URL(string: "https://news.ycombinator.com/")!
 
-    init(
-        url: URL, token: Token
-    ) {
+    init(url: URL, token: Token) {
         var endpoint = Endpoint(url: url)
         endpoint.add(token)
         self = endpoint
@@ -72,9 +70,9 @@ extension Endpoint {
         return Endpoint(url: url)
     }
 
-    static func hn(
-        replyToID id: Int, token: Token, hmac: String? = nil, text: String? = nil
-    ) -> Endpoint {
+    static func hn(replyToID id: Int, token: Token, hmac: String? = nil, text: String? = nil)
+        -> Endpoint
+    {
         var components = URLComponents()
         components.path += "comment"
         components.queryItems = [URLQueryItem(name: "parent", value: "\(id)")]

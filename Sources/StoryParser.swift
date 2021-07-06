@@ -17,9 +17,7 @@ class StoryParser {
 
     // MARK: - Methods
 
-    func aThingEl(id: Int) -> Element? {
-        return aThingEls.first(where: { $0.id() == "\(id)" })
-    }
+    func aThingEl(id: Int) -> Element? { return aThingEls.first(where: { $0.id() == "\(id)" }) }
 
     func commTextEl(id: Int) -> Element? {
         let aThingEl = self.aThingEl(id: id)
@@ -30,9 +28,7 @@ class StoryParser {
     func commentColors() -> [Int: Comment.Color] {
         var commentColors: [Int: Comment.Color] = [:]
         for id in ids {
-            guard let commTextEl = self.commTextEl(id: id) else {
-                continue
-            }
+            guard let commTextEl = self.commTextEl(id: id) else { continue }
             for color in Comment.Color.allCases {
                 if commTextEl.hasClass(color.rawValue) {
                     commentColors[id] = color
@@ -45,17 +41,14 @@ class StoryParser {
 
     func voteLinkEls(id: Int) -> [Element] {
         let aThingEl = self.aThingEl(id: id)
-        let voteLinkEls = try! aThingEl?.select(".votelinks a:has(.votearrow):not(.nosee)").array() ?? []
+        let voteLinkEls =
+            try! aThingEl?.select(".votelinks a:has(.votearrow):not(.nosee)").array() ?? []
         return voteLinkEls
     }
 
     func unvoteLinkEl(id: Int) -> Element? {
         let containerEl: Element?
-        if id == storyID {
-            containerEl = fatItemEl
-        } else {
-            containerEl = self.aThingEl(id: id)
-        }
+        if id == storyID { containerEl = fatItemEl } else { containerEl = self.aThingEl(id: id) }
         let unvoteLinkEl = try! containerEl?.select("[id^=unv] > a").first()
         return unvoteLinkEl
     }

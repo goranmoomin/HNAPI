@@ -36,9 +36,7 @@ public class Comment: Decodable {
         case children
     }
 
-    required public init(
-        from decoder: Decoder
-    ) throws {
+    required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
         creation = try container.decode(Date.self, forKey: .creation)

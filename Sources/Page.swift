@@ -9,9 +9,7 @@ public class Page {
 
     // MARK: - Init
 
-    init(
-        item: TopLevelItem, children: [Comment], actions: [Int: Set<Action>]
-    ) {
+    init(item: TopLevelItem, children: [Comment], actions: [Int: Set<Action>]) {
         topLevelItem = item
         self.children = children
         self.actions = actions
