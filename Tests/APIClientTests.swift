@@ -1577,7 +1577,7 @@ final class APIClientTests: XCTestCase {
                 XCTAssertEqual(page.children[0].children[0].children[0].text, "<p>sure</p>")
                 XCTAssertEqual(page.children[0].color, .c00)
                 XCTAssertEqual(page.children[4].color, .cdd)
-                XCTAssertEqual(page.actions[15]?.count, 0)
+                XCTAssertEqual(page.actions[15]?.count, 1)
                 XCTAssertEqual(page.actions[17]?.count, 1)
             }
         }
