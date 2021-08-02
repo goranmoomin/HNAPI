@@ -3,10 +3,16 @@ import Foundation
 public class APIClient {
     // MARK: - Error
 
-    public enum APIError: Error {
+    public enum APIError: Error, LocalizedError {
         case loginFailed
-        case actionNotValid
         case unknown
+
+        public var errorDescription: String? {
+            switch self {
+            case .loginFailed: return "Login Failed."
+            case .unknown: return "Unknown Error."
+            }
+        }
     }
 
     // MARK: - Properties

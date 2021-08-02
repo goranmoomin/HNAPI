@@ -7,9 +7,18 @@ protocol NetworkClient {
 }
 
 extension URLSession: NetworkClient {
-    public enum HTTPError: Error {
+    public enum HTTPError: Error, LocalizedError {
         case transportError(Error)
         case serverSideError(statusCode: Int)
+
+        public var errorDescription: String? {
+            switch self {
+            case .transportError(let error):
+                let error = error as NSError
+                return error.localizedDescription
+            case .serverSideError(let statusCode): return "Server returned \(statusCode)."
+            }
+        }
     }
 
     fileprivate static func adapter(_ completionHandler: @escaping Completion) -> (
@@ -18,7 +27,8 @@ extension URLSession: NetworkClient {
         let adapter = { (data: Data?, response: URLResponse?, error: Error?) in
             if let data = data, let response = response as? HTTPURLResponse {
                 if response.statusCode >= 400 && response.statusCode < 500 {
-                    completionHandler(.failure(HTTPError.serverSideError(statusCode: response.statusCode)))
+                    completionHandler(
+                        .failure(HTTPError.serverSideError(statusCode: response.statusCode)))
                 } else {
                     completionHandler(.success((data, response)))
                 }
