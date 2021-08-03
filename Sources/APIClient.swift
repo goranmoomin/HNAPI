@@ -92,9 +92,8 @@ public class APIClient {
         }
     }
 
-    public func items(
-        category: Category = .top, count: Int = 30,
-        completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
+    public func itemIds(
+        category: Category = .top, completionHandler: @escaping (Result<[Int], Error>) -> Void
     ) {
         networkClient.request(to: .firebase(category: category)) { result in
             guard case let .success((data, _)) = result else {
@@ -102,9 +101,23 @@ public class APIClient {
                 return
             }
             do {
-                let ids = Array(try self.decoder.decode([Int].self, from: data).prefix(count))
-                self.items(ids: ids, completionHandler: completionHandler)
+                let ids = try self.decoder.decode([Int].self, from: data)
+                completionHandler(.success(ids))
             } catch { completionHandler(.failure(error)) }
+        }
+    }
+
+    public func items(
+        category: Category = .top, count: Int = 30,
+        completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
+    ) {
+        itemIds { result in
+            guard case var .success(ids) = result else {
+                completionHandler(.failure(result.failure!))
+                return
+            }
+            ids = Array(ids.prefix(count))
+            self.items(ids: ids, completionHandler: completionHandler)
         }
     }
 
