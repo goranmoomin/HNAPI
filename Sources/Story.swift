@@ -38,7 +38,7 @@ public class Story: Decodable {
         creation = try container.decode(Date.self, forKey: .creation)
         if let url = try? container.decode(URL.self, forKey: .url) {
             content = .url(url)
-        } else if let text = try? Entities.unescape(container.decode(String.self, forKey: .text)) {
+        } else if let text = try? container.decode(String.self, forKey: .text) {
             content = .text(text)
         } else {
             // FIXME: Don't hardcode this string

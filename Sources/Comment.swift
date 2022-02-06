@@ -41,7 +41,7 @@ public class Comment: Decodable {
         id = try container.decode(Int.self, forKey: .id)
         creation = try container.decode(Date.self, forKey: .creation)
         do {
-            text = try Entities.unescape(container.decode(String.self, forKey: .text))
+            text = try container.decode(String.self, forKey: .text)
             author = try container.decode(String.self, forKey: .author)
             isDeleted = false
         } catch {
