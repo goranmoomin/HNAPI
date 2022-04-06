@@ -4,6 +4,37 @@ typealias Endpoint = URLRequest
 
 // MARK: - Convenience Static Methods
 
+extension URL {
+    fileprivate static var algoliaBase = URL(string: "https://hn.algolia.com/api/v1/")!
+    fileprivate static var firebaseBase = URL(string: "https://hacker-news.firebaseio.com/v0/")!
+    fileprivate static var hnBase = URL(string: "https://news.ycombinator.com/")!
+
+    static func algolia(ids: [Int]) -> URL {
+        var components = URLComponents()
+        let tags = ids.map({ "story_\($0)" })
+        components.path += "search"
+        components.queryItems = [
+            URLQueryItem(name: "tags", value: "(story,job,poll),(\(tags.joined(separator: ",")))"),
+            URLQueryItem(name: "hitsPerPage", value: "\(ids.count)"),
+        ]
+        return components.url(relativeTo: algoliaBase)!
+    }
+
+    static func algolia(query: String) -> URL {
+        var components = URLComponents()
+        components.path += "search"
+        components.queryItems = [
+            URLQueryItem(name: "tags", value: "(story,job,poll)"),
+            URLQueryItem(name: "query", value: query),
+        ]
+        return components.url(relativeTo: algoliaBase)!
+    }
+
+    static func firebase(category: Category) -> URL {
+        return firebaseBase.appendingPathComponent("\(category.rawValue).json")
+    }
+}
+
 extension Endpoint {
     static var algoliaBase = URL(string: "https://hn.algolia.com/api/v1/")!
     static var firebaseBase = URL(string: "https://hacker-news.firebaseio.com/v0/")!

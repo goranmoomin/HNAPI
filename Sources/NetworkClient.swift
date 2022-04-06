@@ -4,6 +4,8 @@ protocol NetworkClient {
     typealias Completion = (Result<(Data, HTTPURLResponse), Error>) -> Void
 
     func request(to endpoint: Endpoint, completionHandler: @escaping Completion)
+    func request<T>(_ type: T.Type, from url: URL, decoder: JSONDecoder) async throws -> T
+    where T: Decodable
 }
 
 extension URLSession: NetworkClient {
@@ -45,5 +47,15 @@ extension URLSession: NetworkClient {
         let dataTask = self.dataTask(
             with: endpoint, completionHandler: Self.adapter(completionHandler))
         dataTask.resume()
+    }
+
+    func request<T>(_ type: T.Type, from url: URL, decoder: JSONDecoder) async throws -> T
+    where T: Decodable {
+        let (data, response) = try await data(from: url)
+        if let response = response as? HTTPURLResponse, response.statusCode >= 400 {
+            throw HTTPError.serverSideError(statusCode: response.statusCode)
+        }
+        let model = try decoder.decode(type, from: data)
+        return model
     }
 }

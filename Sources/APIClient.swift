@@ -58,38 +58,40 @@ public class APIClient {
     public func items(
         ids: [Int], completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
     ) {
-        networkClient.request(to: .algolia(ids: ids)) { result in
-            guard case let .success((data, _)) = result else {
-                completionHandler(.failure(result.failure!))
-                return
-            }
-            let itemsResult = Result<[TopLevelItem], Error> {
-                let queryResult = try self.decoder.decode(QueryResult.self, from: data)
-                let hits = queryResult.hits.sorted { left, right in
-                    guard let leftIndex = ids.firstIndex(of: left.id) else { return false }
-                    guard let rightIndex = ids.firstIndex(of: right.id) else { return true }
-                    return leftIndex < rightIndex
-                }
-                return hits
-            }
-            completionHandler(itemsResult)
+        Task {
+            do {
+                let result = try await items(ids: ids)
+                completionHandler(.success(result))
+            } catch { completionHandler(.failure(error)) }
         }
+    }
+
+    public func items(ids: [Int]) async throws -> [TopLevelItem] {
+        let queryResult = try await networkClient.request(
+            QueryResult.self, from: .algolia(ids: ids), decoder: decoder)
+        let hits = queryResult.hits.sorted { left, right in
+            guard let leftIndex = ids.firstIndex(of: left.id) else { return false }
+            guard let rightIndex = ids.firstIndex(of: right.id) else { return true }
+            return leftIndex < rightIndex
+        }
+        return hits
     }
 
     public func items(
         query: String, completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
     ) {
-        networkClient.request(to: .algolia(query: query)) { result in
-            guard case let .success((data, _)) = result else {
-                completionHandler(.failure(result.failure!))
-                return
-            }
-            let itemsResult = Result<[TopLevelItem], Error> {
-                let queryResult = try self.decoder.decode(QueryResult.self, from: data)
-                return queryResult.hits
-            }
-            completionHandler(itemsResult)
+        Task {
+            do {
+                let result = try await items(query: query)
+                completionHandler(.success(result))
+            } catch { completionHandler(.failure(error)) }
         }
+    }
+
+    public func items(query: String) async throws -> [TopLevelItem] {
+        let queryResult = try await networkClient.request(
+            QueryResult.self, from: .algolia(query: query), decoder: decoder)
+        return queryResult.hits
     }
 
     public func itemIds(
@@ -105,6 +107,11 @@ public class APIClient {
                 completionHandler(.success(ids))
             } catch { completionHandler(.failure(error)) }
         }
+    }
+
+    public func itemIds(category: Category) async throws -> [Int] {
+        return try await networkClient.request(
+            [Int].self, from: .firebase(category: category), decoder: decoder)
     }
 
     public func items(
