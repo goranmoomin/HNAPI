@@ -9,6 +9,12 @@ extension URL {
     fileprivate static var firebaseBase = URL(string: "https://hacker-news.firebaseio.com/v0/")!
     fileprivate static var hnBase = URL(string: "https://news.ycombinator.com/")!
 
+    static func algolia(id: Int) -> URL {
+        var components = URLComponents()
+        components.path += "items/\(id)"
+        return components.url(relativeTo: algoliaBase)!
+    }
+
     static func algolia(ids: [Int]) -> URL {
         var components = URLComponents()
         let tags = ids.map({ "story_\($0)" })
@@ -33,6 +39,14 @@ extension URL {
     static func firebase(category: Category) -> URL {
         return firebaseBase.appendingPathComponent("\(category.rawValue).json")
     }
+
+    static func hn(id: Int) -> URL {
+        var components = URLComponents()
+        components.path += "item"
+        components.queryItems = [URLQueryItem(name: "id", value: "\(id)")]
+        return components.url(relativeTo: hnBase)!
+    }
+
 }
 
 extension Endpoint {

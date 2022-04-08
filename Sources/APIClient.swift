@@ -55,17 +55,6 @@ public class APIClient {
 
     struct QueryResult: Decodable { var hits: [TopLevelItem] }
 
-    public func items(
-        ids: [Int], completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
-    ) {
-        Task {
-            do {
-                let result = try await items(ids: ids)
-                completionHandler(.success(result))
-            } catch { completionHandler(.failure(error)) }
-        }
-    }
-
     public func items(ids: [Int]) async throws -> [TopLevelItem] {
         let queryResult = try await networkClient.request(
             QueryResult.self, from: .algolia(ids: ids), decoder: decoder)
@@ -77,60 +66,16 @@ public class APIClient {
         return hits
     }
 
-    public func items(
-        query: String, completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
-    ) {
-        Task {
-            do {
-                let result = try await items(query: query)
-                completionHandler(.success(result))
-            } catch { completionHandler(.failure(error)) }
-        }
-    }
-
     public func items(query: String) async throws -> [TopLevelItem] {
         let queryResult = try await networkClient.request(
             QueryResult.self, from: .algolia(query: query), decoder: decoder)
         return queryResult.hits
     }
 
-    public func itemIds(
-        category: Category = .top, completionHandler: @escaping (Result<[Int], Error>) -> Void
-    ) {
-        networkClient.request(to: .firebase(category: category)) { result in
-            guard case let .success((data, _)) = result else {
-                completionHandler(.failure(result.failure!))
-                return
-            }
-            do {
-                let ids = try self.decoder.decode([Int].self, from: data)
-                completionHandler(.success(ids))
-            } catch { completionHandler(.failure(error)) }
-        }
-    }
-
     public func itemIds(category: Category) async throws -> [Int] {
         return try await networkClient.request(
             [Int].self, from: .firebase(category: category), decoder: decoder)
     }
-
-    public func items(
-        category: Category = .top, count: Int = 30,
-        completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
-    ) {
-        itemIds { result in
-            guard case var .success(ids) = result else {
-                completionHandler(.failure(result.failure!))
-                return
-            }
-            ids = Array(ids.prefix(count))
-            self.items(ids: ids, completionHandler: completionHandler)
-        }
-    }
-
-    public func topItems(
-        count: Int = 30, completionHandler: @escaping (Result<[TopLevelItem], Error>) -> Void
-    ) { items(category: .top, count: count, completionHandler: completionHandler) }
 
     // MARK: - Page
 
@@ -156,46 +101,27 @@ public class APIClient {
         }
     }
 
-    public func page(
-        item: TopLevelItem, token: Token? = nil,
-        completionHandler: @escaping (Result<Page, Error>) -> Void
-    ) {
-        networkClient.request(to: .algolia(id: item.id)) { result in
-            guard case let .success((data, _)) = result else {
-                completionHandler(.failure(result.failure!))
-                return
-            }
-            do {
-                let algoliaItem = try self.decoder.decode(AlgoliaItem.self, from: data)
-                var comments = algoliaItem.children
-                // TODO: Fetch HN & Algolia API concurrently
-                self.networkClient.request(to: .hn(id: item.id, token: token)) { result in
-                    guard case let .success((data, _)) = result else {
-                        completionHandler(.failure(result.failure!))
-                        return
-                    }
-                    let html = String(data: data, encoding: .utf8)!
-                    do {
-                        let parser = try StoryParser(html: html)
-                        comments = parser.sortedCommentTree(original: comments)
-                        let actions = parser.actions()
-                        var item = item
-                        switch item {
-                        case .job(let job):
-                            job.title = algoliaItem.title
-                            item = .job(job)
-                        case .story(let story):
-                            story.title = algoliaItem.title
-                            story.points = algoliaItem.points
-                            story.commentCount = algoliaItem.commentCount
-                            item = .story(story)
-                        }
-                        let page = Page(item: item, children: comments, actions: actions)
-                        completionHandler(.success(page))
-                    } catch { completionHandler(.failure(error)) }
-                }
-            } catch { completionHandler(.failure(error)) }
+    public func page(item: TopLevelItem, token: Token? = nil) async throws -> Page {
+        let algoliaItem = try await networkClient.request(
+            AlgoliaItem.self, from: .algolia(id: item.id), decoder: decoder)
+        let html = try await networkClient.string(from: .hn(id: item.id), token: token)
+        var children = algoliaItem.children
+        let parser = try StoryParser(html: html)
+        children = parser.sortedCommentTree(original: children)
+        let actions = parser.actions()
+        var item = item
+        switch item {
+        case .job(let job):
+            job.title = algoliaItem.title
+            item = .job(job)
+        case .story(let story):
+            story.title = algoliaItem.title
+            story.points = algoliaItem.points
+            story.commentCount = algoliaItem.commentCount
+            item = .story(story)
         }
+        let page = Page(item: item, children: children, actions: actions)
+        return page
     }
 
     public func execute(
