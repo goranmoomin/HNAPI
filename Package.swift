@@ -7,7 +7,4 @@ let package = Package(
     name: "HNAPI", platforms: [.macOS(.v12)],
     products: [.library(name: "HNAPI", targets: ["HNAPI"])],
     dependencies: [.package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.0.0")],
-    targets: [
-        .target(name: "HNAPI", dependencies: ["SwiftSoup"], path: "Sources"),
-        .testTarget(name: "HNAPITests", dependencies: ["HNAPI"], path: "Tests"),
-    ])
+    targets: [.target(name: "HNAPI", dependencies: ["SwiftSoup"], path: "Sources")])
